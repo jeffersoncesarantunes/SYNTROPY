@@ -76,7 +76,7 @@ Audits critical Linux kernel security parameters in real-time, classifying each 
 sudo ./linspec
 
 # Sample output:
-# [ 01 ]  MEMORY   >  ASLR                             [+] [   PASS   ]
+# [ 01 ]  MEMORY   >  ASLR                              [+] [   PASS   ]
 # [ 02 ]  KERNEL   >  Kernel Pointer Restriction        [-] [   VULN   ]
 # [ 12 ]  MEMORY   >  DMA Restriction                   [+] [   PASS   ]
 # [ 15 ]  CPU      >  Meltdown Mitigation               [+] [   PASS   ]
@@ -130,7 +130,7 @@ sudo ./kscanner --json > alerts.json
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    LINUX FORENSICS TOOLKIT                       │
+│                    LINUX FORENSICS TOOLKIT                      │
 ├─────────────┬───────────────────┬───────────────────────────────┤
 │   LinSpec   │     S.I.R.E.N     │          K-Scanner            │
 │  (Auditor)  │  (Acquisitor)     │        (Analyzer)             │
@@ -139,7 +139,7 @@ sudo ./kscanner --json > alerts.json
 │ /sys/devices│ /proc/kcore       │ /proc/[PID]/mem               │
 │             │ /proc/iomem       │                               │
 ├─────────────┼───────────────────┼───────────────────────────────┤
-│      report.json ──────► audit-aware decision                  │
+│      report.json ──────► audit-aware decision                   │
 │             │                   │                               │
 │             │   dumps/*.bin ◄───┘   RWX dump pipeline           │
 │             │   dumps/*.sha256      │                           │
@@ -162,15 +162,15 @@ INCIDENT DETECTED
        ▼
 ┌──────────────────┐
 │ PHASE 1: TRIAGE  │
-│ LinSpec           │  < 1 second
+│ LinSpec          │  < 1 second
 │ "Is the kernel   │
-│  hardened?"       │
+│  hardened?"      │
 └────────┬─────────┘
          │
          ▼
 ┌──────────────────┐
 │ PHASE 2: ACQUIRE │
-│ S.I.R.E.N         │  < 5 minutes
+│ S.I.R.E.N        │  < 5 minutes
 │ dump memory with │
 │ integrity chain  │
 └────────┬─────────┘
@@ -178,9 +178,9 @@ INCIDENT DETECTED
          ▼
 ┌──────────────────┐
 │ PHASE 3: ANALYZE │
-│ K-Scanner         │  < 30 seconds
-│ "Who has RWX?"    │
-│ + strings + hex   │
+│ K-Scanner        │  < 30 seconds
+│ "Who has RWX?"   │
+│ + strings + hex  │
 └────────┬─────────┘
          │
          ▼
@@ -207,12 +207,12 @@ cd LinSpec && make clean && make && cd ..
 # ---- K-Scanner ----
 cd K-Scanner && make clean && make && cd ..
 
-# ---- S.I.R.E.N ----
-chmod +x S.I.R.E.N/src/siren.sh
+# ---- SIREN ----
+chmod +x SIREN/src/siren.sh
 
 # Ready. Run as root:
 sudo ./LinSpec/linspec
-sudo ./S.I.R.E.N/src/siren.sh
+sudo ./SIREN/src/siren.sh
 sudo ./K-Scanner/kscanner --help
 ```
 
@@ -282,7 +282,7 @@ sudo ./kscanner --live <PID> "<regex>"
 
 ## ● Post-Acquisition Analysis
 
-After extraction, the toolkit generates forensic artifacts in `K-Scanner/build/dumps/` or `S.I.R.E.N/dumps/`. Here is how to analyze them:
+After extraction, the toolkit generates forensic artifacts in `K-Scanner/build/dumps/` or `SIREN/dumps/`. Here is how to analyze them:
 
 ### 1. Integrity Verification (SHA256)
 
@@ -292,7 +292,7 @@ cd K-Scanner/build/dumps
 sha256sum -c *.sha256
 
 # For SIREN
-cd S.I.R.E.N/dumps/checksums
+cd SIREN/dumps/checksums
 sha256sum -c *.sha256
 ```
 
@@ -550,7 +550,7 @@ Linux-Forensics-Toolkit/
 │   ├── docs/                ├── technical documentation
 │   └── Makefile
 │
-├── S.I.R.E.N/                   ← Memory acquisition
+├── SIREN/                       ← Memory acquisition
 │   ├── src/                 ├── siren.sh
 │   ├── dumps/               ├── extracted artifacts (.bin, .sha256, manifest.csv)
 │   ├── docs/                ├── acquisition model, safety model
@@ -566,8 +566,6 @@ Each subdirectory maintains its own documentation and independent Makefile. The 
 
 ## ● License
 
-Distributed under the MIT License. Each subproject (K-Scanner, LinSpec, S.I.R.E.N) contains its own LICENSE file under the same terms.
+[![License-MIT](https://img.shields.io/badge/License-MIT-EE0000?style=flat-square&logo=opensourceinitiative&logoColor=white)](./LICENSE)
 
----
-
-*"Memory is volatile. Evidence doesn't have to be."*
+*This project is licensed under the MIT License. Each subproject (K-Scanner, LinSpec, S.I.R.E.N) also maintains its own license under the same terms.*
