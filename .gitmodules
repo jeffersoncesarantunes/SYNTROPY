@@ -1,0 +1,9 @@
+[submodule "K-Scanner"]
+	path = K-Scanner
+	url = git@github.com:jeffersoncesarantunes/K-Scanner.git
+[submodule "LinSpec"]
+	path = LinSpec
+	url = git@github.com:jeffersoncesarantunes/LinSpec.git
+[submodule "S.I.R.E.N"]
+	path = S.I.R.E.N
+	url = git@github.com:jeffersoncesarantunes/S.I.R.E.N.git
