@@ -313,8 +313,6 @@ It transforms raw kernel telemetry into a structured, court-ready forensic chain
 
 ---
 
----
-
 ## ● Project in Action
 
 [![Overview](./K-Scanner/Imagens/kscanner1.png)](./K-Scanner/Imagens/kscanner1.png)
