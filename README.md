@@ -315,14 +315,26 @@ It transforms raw kernel telemetry into a structured, court-ready forensic chain
 
 ## ● Project in Action
 
-[![Overview](./K-Scanner/Imagens/kscanner1.png)](./K-Scanner/Imagens/kscanner1.png)
-*1 - Live forensic mode identifying RWX memory regions across active processes.*
+<p align="center">
+  <a href="K-Scanner/Imagens/kscanner1.png">
+    <img src="K-Scanner/Imagens/kscanner1.png" alt="K-Scanner Overview" width="900">
+  </a>
+  <br><em>1 - Live forensic mode identifying RWX memory regions across active processes.</em>
+</p>
 
-[![Acquisition](./S.I.R.E.N/Imagens/siren3.png)](./S.I.R.E.N/Imagens/siren3.png)
-*2 - Full memory acquisition with integrity verification and structured reporting.*
+<p align="center">
+  <a href="S.I.R.E.N/Imagens/siren3.png">
+    <img src="S.I.R.E.N/Imagens/siren3.png" alt="SIREN Acquisition" width="900">
+  </a>
+  <br><em>2 - Full memory acquisition with integrity verification and structured reporting.</em>
+</p>
 
-[![Validation](./LinSpec/Imagens/linspec3.png)](./LinSpec/Imagens/linspec3.png)
-*3 - Cross-validation of kernel audit results against live system state.*
+<p align="center">
+  <a href="LinSpec/Imagens/linspec3.png">
+    <img src="LinSpec/Imagens/linspec3.png" alt="LinSpec Validation" width="900">
+  </a>
+  <br><em>3 - Cross-validation of kernel audit results against live system state.</em>
+</p>
 
 ---
 
