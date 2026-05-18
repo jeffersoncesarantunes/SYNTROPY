@@ -1,0 +1,44 @@
+# ==============================================================================
+# K-Scanner - Git Ignore Configuration
+# ==============================================================================
+
+# Build Artifacts
+build/
+bin/
+obj/
+
+*.o
+*.a
+*.so
+*.out
+
+# Generated Binaries
+kscanner
+
+# Forensic Dumps & Evidence
+results/
+
+*.bin
+*.raw
+*.dmp
+*.core
+
+# Automated Triage Artifacts
+*.sha256
+*.strings.txt
+*.hex.txt
+*.json
+*.csv
+
+# Logs
+*.log
+
+# Editor Files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Operating System Files
+.DS_Store
+Thumbs.db

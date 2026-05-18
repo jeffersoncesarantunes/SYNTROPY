@@ -1,0 +1,20 @@
+{
+  "audit_info": {
+    "tool": "LinSpec",
+    "timestamp": 1777777021
+  },
+  "capabilities": {
+    "kptr_restrict": 0,
+    "ptrace_scope": 1,
+    "dmesg_restrict": 1,
+    "bpf_jit_harden": 0,
+    "userns_clone": 1,
+    "spectre_v2": 1,
+    "meltdown": 1
+  },
+  "summary": {
+    "pass": 11,
+    "warn": 3,
+    "vuln": 1
+  }
+}
