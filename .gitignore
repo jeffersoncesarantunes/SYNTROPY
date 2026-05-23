@@ -1,0 +1,169 @@
+# ==============================================================================
+# SYNTROPY - Git Ignore Configuration
+# Security-Focused Meta-Repository
+# ==============================================================================
+
+# Environment Files (CRITICAL - never commit secrets)
+# ------------------------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+.env.staging
+.env.test
+.env.example
+
+# Secrets & Credentials
+# ------------------------------------------------------------------------------
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.jks
+*.keystore
+*.ovpn
+secrets.yml
+secrets.yaml
+credentials.json
+service-account.json
+firebase.json
+config.php
+settings.py
+application.yml
+application.properties
+.npmrc
+.pypirc
+.netrc
+
+# SSH & GPG
+# ------------------------------------------------------------------------------
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+authorized_keys
+known_hosts
+.ssh/
+.gnupg/
+
+# IDE & Editor
+# ------------------------------------------------------------------------------
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.vim/
+.project
+.classpath
+.settings/
+
+# OS Files
+# ------------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# History & Logs
+# ------------------------------------------------------------------------------
+.history
+.bash_history
+.zsh_history
+.zhistory
+.fish_history
+*.log
+
+# Build Artifacts
+# ------------------------------------------------------------------------------
+build/
+dist/
+target/
+bin/
+obj/
+*.o
+*.a
+*.so
+*.out
+*.exe
+*.dll
+*.dylib
+
+# Package Manager Dirs
+# ------------------------------------------------------------------------------
+node_modules/
+vendor/
+vendor/bundle/
+.bundle/
+.jruby/
+.gem/
+.sass-cache/
+pip-log.txt
+pip-wheel-metadata/
+
+# Database Files
+# ------------------------------------------------------------------------------
+*.sql
+*.db
+*.sqlite
+*.sqlite3
+*.mdb
+*.accdb
+*.sdf
+backup.sql
+dump.sql
+database.sql
+
+# Cloud & Infrastructure
+# ------------------------------------------------------------------------------
+.terraform/
+terraform.tfstate
+terraform.tfstate.*
+terraform.tfvars
+terraform.tfvars.json
+*.tfplan
+.kube/
+kubeconfig
+.aws/
+.docker/config.json
+.gcloud/
+
+# Backup Files
+# ------------------------------------------------------------------------------
+*.bak
+*.backup
+*.dump
+*.swp
+*.orig
+*.old
+
+# Test & Coverage
+# ------------------------------------------------------------------------------
+coverage/
+.coverage
+htmlcov/
+*.coverage
+*.cover
+.pytest_cache/
+__pycache__/
+*.pyc
+*.pyo
+
+# Submodule artifacts (SYNTROPY-specific)
+# ------------------------------------------------------------------------------
+# Forensic evidence files from submodules
+**/dumps/
+**/reports/
+**/results/
+**/forensic_report.txt
+**/report.csv
+**/report.json
+**/kverify-report.csv
+**/kverify-report.json
