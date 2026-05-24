@@ -12,6 +12,14 @@ Unified Linux Incident Response Toolkit — Audit, Acquire, Analyze.
 
 ---
 
+## ● Etymology & Origin
+
+The name **SYNTROPY** originates from the concept of **syntropy** — the opposite of entropy.
+
+While entropy represents the tendency toward disorder and chaos, syntropy is the tendency toward order, organization, and structure in complex systems. This principle directly mirrors the purpose of an incident response toolkit: when a system is under attack — in a state of forensic chaos — SYNTROPY provides the methodology and tools to restore order, establish a clear chain of evidence, and bring structure to the investigation.
+
+---
+
 ## ● Overview
 
 **SYNTROPY** is an open-source forensic ecosystem composed of three specialized tools that work together to **audit, acquire, and analyze** volatile evidence on Linux systems under investigation.
@@ -420,16 +428,6 @@ Each subdirectory maintains its own documentation and independent Makefile. The 
 [![Docs-SIREN](https://img.shields.io/badge/SIREN-Acquisition-00599C?style=flat-square\&logo=linux\&logoColor=white)](./S.I.R.E.N/docs/ACQUISITION_MODEL.md)
 [![Docs-KScanner](https://img.shields.io/badge/K--Scanner-Methodology-003366?style=flat-square\&logo=linux\&logoColor=white)](./K-Scanner/docs/forensic_methodology.md)
 [![Docs-ThreatModel](https://img.shields.io/badge/Threat-Model-CC0000?style=flat-square\&logo=dependabot\&logoColor=white)](./K-Scanner/docs/threat_model.md)
-
----
-
-## ● Etymology & Origin
-
-The name **SYNTROPY** originates from the concept of **syntropy** — the opposite of entropy.
-
-While entropy represents the tendency toward disorder and chaos, syntropy is the tendency toward order, organization, and structure in complex systems. This principle directly mirrors the purpose of an incident response toolkit: when a system is under attack — in a state of forensic chaos — SYNTROPY provides the methodology and tools to restore order, establish a clear chain of evidence, and bring structure to the investigation.
-
-The name reflects the philosophy behind the project: **bringing organization to the chaos of a security incident** through a disciplined, audit-aware, cryptographically validated forensic pipeline.
 
 ---
 
