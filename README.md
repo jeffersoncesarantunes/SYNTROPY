@@ -153,29 +153,43 @@ sudo ./kscanner --json > alerts.json
 SYNTROPY integrates three tools that communicate through a shared forensic protocol (`report.json`):
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                          SYNTROPY                               │
-├─────────────┬───────────────────┬───────────────────────────────┤
-│   LinSpec   │     S.I.R.E.N     │          K-Scanner            │
-│  (Auditor)  │  (Acquisitor)     │        (Analyzer)             │
-├─────────────┼───────────────────┼───────────────────────────────┤
-│ /proc/sys   │ /dev/mem          │ /proc/[PID]/maps              │
-│ /sys/devices│ /proc/kcore       │ /proc/[PID]/mem               │
-│             │ /proc/iomem       │                               │
-├─────────────┼───────────────────┼───────────────────────────────┤
-│      report.json ──────► audit-aware decision                   │
-│             │                   │                               │
-│             │   dumps/*.bin ◄───┘   RWX dump pipeline           │
-│             │   dumps/*.sha256      │                           │
-│             │   dumps/report_*.json │                           │
-└─────────────┴───────────────────┴───────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────┐
+│                          SYNTROPY                                        │
+│               Audit → Acquire → Analyze                                  │
+├──────────────┬───────────────────┬──────────────────────────────────────┤
+│   LinSpec    │    S.I.R.E.N      │            K-Scanner                  │
+│  (Auditor)   │  (Acquisitor)     │          (Analyzer)                   │
+├──────────────┼───────────────────┼──────────────────────────────────────┤
+│ /proc/sys    │ /dev/mem          │ /proc/[PID]/maps                     │
+│ /sys/devices │ /proc/kcore       │ /proc/[PID]/mem                      │
+│              │ /proc/iomem       │                                      │
+├──────────────┴───────────────────┴──────────────────────────────────────┤
+│                                                                         │
+│ ① LinSpec ──reports/report.json──▶ SIREN (adaptive source selection)   │
+│                                                                         │
+│ ② SIREN  ──dumps/binaries/*.bin──▶ Post-acquisition analysis           │
+│          ──dumps/reports/*.json──▶ Forensic report & manifest           │
+│          ──dumps/checksums/*──▶ SHA256 integrity chain                  │
+│                                                                         │
+│ ③ K-Scanner ──JSON/CSV/terminal──▶ RWX alerts per process              │
+│             ──build/dumps/*──▶ Per-region dumps + strings + disasm      │
+│                                                                         │
+├──────────────────────────────────────────────────────────────────────────┤
+│                    SYNTROPY Scripts (orchestration layer)                │
+│                                                                         │
+│  syntropy-run.sh           → ① + ② + ③ em um comando                   │
+│  syntropy-bind.sh          → syntropy_report.json (relatório unificado) │
+│  syntropy-scan-offline.sh  → Análise offline de dump .bin               │
+│                                                                         │
+└──────────────────────────────────────────────────────────────────────────┘
 ```
 
 **Data flow:**
 
-1. **LinSpec** audits the kernel and produces `report.json`
-2. **S.I.R.E.N** reads `report.json` → decides which memory interface to use → dumps memory
-3. **K-Scanner** scans processes in real-time → flags RWX regions → extracts evidence if needed
+1. **LinSpec** audita o kernel e produz `reports/report.json`
+2. **S.I.R.E.N** consome `report.json` para selecionar a fonte de aquisição → despeja a memória em `dumps/` com SHA256 + relatório JSON
+3. **K-Scanner** escaneia processos ao vivo via `/proc/[PID]/maps` → sinaliza regiões RWX → extrai evidências em `build/dumps/` com strings, desassembly e YARA
+4. **SYNTROPY Scripts** orquestram as 3 ferramentas e geram um relatório forense unificado com cadeia de custódia
 
 ---
 
