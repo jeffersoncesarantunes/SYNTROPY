@@ -153,35 +153,35 @@ sudo ./kscanner --json > alerts.json
 SYNTROPY integrates three tools that communicate through a shared forensic protocol (`report.json`):
 
 ```
-┌──────────────────────────────────────────────────────────────────────────┐
-│                          SYNTROPY                                        │
-│               Audit -> Acquire -> Analyze                                │
-├───────────────┬────────────────────┬─────────────────────────────────────┤
-│   LinSpec     │     S.I.R.E.N      │            K-Scanner                │
-│  (Auditor)    │   (Acquisitor)     │          (Analyzer)                 │
-├───────────────┼────────────────────┼─────────────────────────────────────┤
-│ /proc/sys     │ /dev/mem           │ /proc/[PID]/maps                    │
-│ /sys/devices  │ /proc/kcore        │ /proc/[PID]/mem                     │
-│               │ /proc/iomem        │                                     │
-├───────────────┴────────────────────┴─────────────────────────────────────┤
-│                                                                          │
-│ (1) LinSpec ──reports/report.json──> SIREN (adaptive source selection)   │
-│                                                                          │
-│ (2) SIREN  ──dumps/binaries/*.bin──> Post-acquisition analysis           │
-│          ──dumps/reports/*.json──> Forensic report & manifest            │
-│          ──dumps/checksums/*──> SHA256 integrity chain                   │
-│                                                                          │
-│ (3) K-Scanner ──JSON/CSV/terminal──> RWX alerts per process              │
-│             ──build/dumps/*──> Per-region dumps + strings + disasm       │
-│                                                                          │
-├──────────────────────────────────────────────────────────────────────────┤
-│                    SYNTROPY Scripts (orchestration layer)                │
-│                                                                          │
-│  syntropy-run.sh           > (1) + (2) + (3) in one command              │
-│  syntropy-bind.sh          > syntropy_report.json (unified report)       │
-│  syntropy-scan-offline.sh  > Offline dump analysis (.bin)                │
-│                                                                          │
-└──────────────────────────────────────────────────────────────────────────┘
++--------------------------------------------------------------------------+
+|                          SYNTROPY                                        |
+|               Audit -> Acquire -> Analyze                                |
++---------------+--------------------+-------------------------------------+
+|   LinSpec     |     S.I.R.E.N      |            K-Scanner                |
+|  (Auditor)    |   (Acquisitor)     |          (Analyzer)                 |
++---------------+--------------------+-------------------------------------+
+| /proc/sys     | /dev/mem           | /proc/[PID]/maps                    |
+| /sys/devices  | /proc/kcore        | /proc/[PID]/mem                     |
+|               | /proc/iomem        |                                     |
++---------------+--------------------+-------------------------------------+
+|                                                                          |
+| (1) LinSpec --reports/report.json--> SIREN (adaptive source selection)   |
+|                                                                          |
+| (2) SIREN  --dumps/binaries/*.bin--> Post-acquisition analysis           |
+|          --dumps/reports/*.json--> Forensic report & manifest            |
+|          --dumps/checksums/*--> SHA256 integrity chain                   |
+|                                                                          |
+| (3) K-Scanner --JSON/CSV/terminal--> RWX alerts per process              |
+|             --build/dumps/*--> Per-region dumps + strings + disasm       |
+|                                                                          |
++--------------------------------------------------------------------------+
+|                    SYNTROPY Scripts (orchestration layer)                |
+|                                                                          |
+|  syntropy-run.sh           > (1) + (2) + (3) in one command              |
+|  syntropy-bind.sh          > syntropy_report.json (unified report)       |
+|  syntropy-scan-offline.sh  > Offline dump analysis (.bin)                |
+|                                                                          |
++--------------------------------------------------------------------------+
 ```
 
 **Data flow:**
