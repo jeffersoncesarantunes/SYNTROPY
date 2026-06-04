@@ -177,9 +177,9 @@ SYNTROPY integrates three tools that communicate through a shared forensic proto
 ├──────────────────────────────────────────────────────────────────────────┤
 │                    SYNTROPY Scripts (orchestration layer)                │
 │                                                                          │
-│  syntropy-run.sh           → ① + ② + ③ em um comando                     │
-│  syntropy-bind.sh          → syntropy_report.json (relatório unificado)  │
-│  syntropy-scan-offline.sh  → Análise offline de dump .bin                │
+│  syntropy-run.sh           → ① + ② + ③ in one command                    │
+│  syntropy-bind.sh          → syntropy_report.json (unified report)       │
+│  syntropy-scan-offline.sh  → Offline dump analysis (.bin)                │
 │                                                                          │
 └──────────────────────────────────────────────────────────────────────────┘
 ```
