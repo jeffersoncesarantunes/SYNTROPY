@@ -361,6 +361,42 @@ SYNTROPY is designed for safe live-response environments:
 
 ---
 
+## ● Scripts
+
+SYNTROPY provides three automation scripts that close the forensic pipeline.
+
+### syntropy-run.sh
+
+Orchestrates the full Audit → Acquire → Analyze workflow in a single command:
+
+```bash
+sudo ./scripts/syntropy-run.sh [--yara <rules.yara>] [--out <dir>]
+```
+
+Each phase runs the respective tool and collects artifacts into a case directory under `/tmp/syntropy/FOR-<timestamp>/`.
+
+### syntropy-bind.sh
+
+Merges LinSpec, S.I.R.E.N, and K-Scanner outputs into a unified forensic report:
+
+```bash
+./scripts/syntropy-bind.sh <case-dir> [dump-sha256]
+```
+
+Generates `syntropy_report.json` with a complete audit—acquire—analyze timeline and cryptographic chain of custody.
+
+### syntropy-scan-offline.sh
+
+Scans a raw memory dump (`.bin`) using the same toolchain K-Scanner relies on, without requiring the original system:
+
+```bash
+./scripts/syntropy-scan-offline.sh <dump.bin> [--yara <rules.yara>]
+```
+
+Produces: SHA256, strings, hexdump, disassembly, and optional YARA matches.
+
+---
+
 ## ● Repository Structure
 
 ```text
@@ -386,6 +422,11 @@ SYNTROPY/
 │   ├── dumps/               ├── extracted artifacts (.bin, .sha256, manifest.csv)
 │   ├── docs/                ├── acquisition model, safety model
 │   └── .gitignore
+│
+├── scripts/                 ← orchestration, handoff, offline scan
+│   ├── syntropy-run.sh
+│   ├── syntropy-bind.sh
+│   └── syntropy-scan-offline.sh
 │
 ├── README.md                ← This file
 └── LICENSE
@@ -416,8 +457,14 @@ Each subdirectory maintains its own documentation and independent Makefile. The 
 * [x] Cryptographic integrity chain (SHA256)
 * [x] JSON/CSV structured forensic reporting
 * [x] Cross-tool integration via `report.json` protocol
-* [ ] Live regex memory hunting (K-Scanner)
-* [ ] eBPF telemetry integration
+* [x] Live regex memory hunting (K-Scanner `--live`)
+* [x] eBPF real-time RWX telemetry (K-Scanner `--bpf`)
+* [x] Disassembly & shellcode pattern detection (K-Scanner)
+* [x] YARA rule-based scan (K-Scanner `--yara`)
+* [x] Container-aware deep inspection (K-Scanner)
+* [x] **Automated orchestration pipeline** (`syntropy-run.sh`)
+* [x] **Unified forensic reporting** (`syntropy-bind.sh`)
+* [x] **Offline dump analysis** (`syntropy-scan-offline.sh`)
 * [ ] Automated remediation suggestions
 
 ---
