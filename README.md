@@ -156,31 +156,31 @@ SYNTROPY integrates three tools that communicate through a shared forensic proto
 ┌──────────────────────────────────────────────────────────────────────────┐
 │                          SYNTROPY                                        │
 │               Audit → Acquire → Analyze                                  │
-├──────────────┬───────────────────┬──────────────────────────────────────┤
-│   LinSpec    │    S.I.R.E.N      │            K-Scanner                  │
-│  (Auditor)   │  (Acquisitor)     │          (Analyzer)                   │
-├──────────────┼───────────────────┼──────────────────────────────────────┤
-│ /proc/sys    │ /dev/mem          │ /proc/[PID]/maps                     │
-│ /sys/devices │ /proc/kcore       │ /proc/[PID]/mem                      │
-│              │ /proc/iomem       │                                      │
-├──────────────┴───────────────────┴──────────────────────────────────────┤
-│                                                                         │
-│ ① LinSpec ──reports/report.json──▶ SIREN (adaptive source selection)   │
-│                                                                         │
-│ ② SIREN  ──dumps/binaries/*.bin──▶ Post-acquisition analysis           │
-│          ──dumps/reports/*.json──▶ Forensic report & manifest           │
-│          ──dumps/checksums/*──▶ SHA256 integrity chain                  │
-│                                                                         │
-│ ③ K-Scanner ──JSON/CSV/terminal──▶ RWX alerts per process              │
-│             ──build/dumps/*──▶ Per-region dumps + strings + disasm      │
-│                                                                         │
+├───────────────┬────────────────────┬─────────────────────────────────────┤
+│   LinSpec     │     S.I.R.E.N      │            K-Scanner                │
+│  (Auditor)    │   (Acquisitor)     │          (Analyzer)                 │
+├───────────────┼────────────────────┼─────────────────────────────────────┤
+│ /proc/sys     │ /dev/mem           │ /proc/[PID]/maps                    │
+│ /sys/devices  │ /proc/kcore        │ /proc/[PID]/mem                     │
+│               │ /proc/iomem        │                                     │
+├───────────────┴────────────────────┴─────────────────────────────────────┤
+│                                                                          │
+│ ① LinSpec ──reports/report.json──▶ SIREN (adaptive source selection)     │
+│                                                                          │
+│ ② SIREN  ──dumps/binaries/*.bin──▶ Post-acquisition analysis             │
+│          ──dumps/reports/*.json──▶ Forensic report & manifest            │
+│          ──dumps/checksums/*──▶ SHA256 integrity chain                   │
+│                                                                          │
+│ ③ K-Scanner ──JSON/CSV/terminal──▶ RWX alerts per process                │
+│             ──build/dumps/*──▶ Per-region dumps + strings + disasm       │
+│                                                                          │
 ├──────────────────────────────────────────────────────────────────────────┤
 │                    SYNTROPY Scripts (orchestration layer)                │
-│                                                                         │
-│  syntropy-run.sh           → ① + ② + ③ em um comando                   │
-│  syntropy-bind.sh          → syntropy_report.json (relatório unificado) │
-│  syntropy-scan-offline.sh  → Análise offline de dump .bin               │
-│                                                                         │
+│                                                                          │
+│  syntropy-run.sh           → ① + ② + ③ em um comando                     │
+│  syntropy-bind.sh          → syntropy_report.json (relatório unificado)  │
+│  syntropy-scan-offline.sh  → Análise offline de dump .bin                │
+│                                                                          │
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
