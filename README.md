@@ -155,7 +155,7 @@ SYNTROPY integrates three tools that communicate through a shared forensic proto
 ```
 ┌──────────────────────────────────────────────────────────────────────────┐
 │                          SYNTROPY                                        │
-│               Audit → Acquire → Analyze                                  │
+│               Audit -> Acquire -> Analyze                                │
 ├───────────────┬────────────────────┬─────────────────────────────────────┤
 │   LinSpec     │     S.I.R.E.N      │            K-Scanner                │
 │  (Auditor)    │   (Acquisitor)     │          (Analyzer)                 │
@@ -165,21 +165,21 @@ SYNTROPY integrates three tools that communicate through a shared forensic proto
 │               │ /proc/iomem        │                                     │
 ├───────────────┴────────────────────┴─────────────────────────────────────┤
 │                                                                          │
-│ ① LinSpec ──reports/report.json──▶ SIREN (adaptive source selection)     │
+│ (1) LinSpec ──reports/report.json──> SIREN (adaptive source selection)   │
 │                                                                          │
-│ ② SIREN  ──dumps/binaries/*.bin──▶ Post-acquisition analysis             │
-│          ──dumps/reports/*.json──▶ Forensic report & manifest            │
-│          ──dumps/checksums/*──▶ SHA256 integrity chain                   │
+│ (2) SIREN  ──dumps/binaries/*.bin──> Post-acquisition analysis           │
+│          ──dumps/reports/*.json──> Forensic report & manifest            │
+│          ──dumps/checksums/*──> SHA256 integrity chain                   │
 │                                                                          │
-│ ③ K-Scanner ──JSON/CSV/terminal──▶ RWX alerts per process                │
-│             ──build/dumps/*──▶ Per-region dumps + strings + disasm       │
+│ (3) K-Scanner ──JSON/CSV/terminal──> RWX alerts per process              │
+│             ──build/dumps/*──> Per-region dumps + strings + disasm       │
 │                                                                          │
 ├──────────────────────────────────────────────────────────────────────────┤
 │                    SYNTROPY Scripts (orchestration layer)                │
 │                                                                          │
-│  syntropy-run.sh           → ① + ② + ③ in one command                    │
-│  syntropy-bind.sh          → syntropy_report.json (unified report)       │
-│  syntropy-scan-offline.sh  → Offline dump analysis (.bin)                │
+│  syntropy-run.sh           > (1) + (2) + (3) in one command              │
+│  syntropy-bind.sh          > syntropy_report.json (unified report)       │
+│  syntropy-scan-offline.sh  > Offline dump analysis (.bin)                │
 │                                                                          │
 └──────────────────────────────────────────────────────────────────────────┘
 ```
