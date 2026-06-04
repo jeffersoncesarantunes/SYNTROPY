@@ -363,37 +363,87 @@ SYNTROPY is designed for safe live-response environments:
 
 ## ● Scripts
 
-SYNTROPY provides three automation scripts that close the forensic pipeline.
+SYNTROPY provides three automation scripts that close the forensic pipeline between LinSpec, S.I.R.E.N, and K-Scanner. All scripts are independent — they call the existing tool binaries and process their output, with zero modifications to the tools themselves.
 
-### syntropy-run.sh
+### Quick Start
 
-Orchestrates the full Audit → Acquire → Analyze workflow in a single command:
+```bash
+# Full pipeline: audit → acquire → analyze → unified report
+sudo ./scripts/syntropy-run.sh
+
+# With YARA rule analysis
+sudo ./scripts/syntropy-run.sh --yara /path/to/rules.yara
+
+# Custom output directory
+sudo ./scripts/syntropy-run.sh --out /evidence/case-001
+```
+
+### syntropy-run.sh — Orchestrator
+
+Runs the complete 3-phase workflow and collects all artifacts into a single case directory:
 
 ```bash
 sudo ./scripts/syntropy-run.sh [--yara <rules.yara>] [--out <dir>]
 ```
 
-Each phase runs the respective tool and collects artifacts into a case directory under `/tmp/syntropy/FOR-<timestamp>/`.
+Pipeline executed:
+1. **LinSpec** — kernel hardening audit (`report.json`)
+2. **S.I.R.E.N** — memory acquisition via kcore (`.bin` dump)
+3. **K-Scanner** — live RWX analysis (`kscan_results.json`)
+4. **syntropy-bind.sh** — unified report generation
 
-### syntropy-bind.sh
-
-Merges LinSpec, S.I.R.E.N, and K-Scanner outputs into a unified forensic report:
-
-```bash
-./scripts/syntropy-bind.sh <case-dir> [dump-sha256]
+All artifacts are organized under `/tmp/syntropy/FOR-<timestamp>/` (or `--out` path):
+```
+<case-root>/
+├── audit/
+│   └── report.json
+├── acquire/
+│   ├── full_scan_*.bin
+│   └── report_*.json
+├── analyze/
+│   └── kscan_results.json
+└── syntropy_report.json    ← unified forensic report
 ```
 
-Generates `syntropy_report.json` with a complete audit—acquire—analyze timeline and cryptographic chain of custody.
+### syntropy-bind.sh — Unified Report Generator
 
-### syntropy-scan-offline.sh
-
-Scans a raw memory dump (`.bin`) using the same toolchain K-Scanner relies on, without requiring the original system:
+Merges LinSpec, S.I.R.E.N, and K-Scanner outputs into a single forensic report with chain of custody:
 
 ```bash
-./scripts/syntropy-scan-offline.sh <dump.bin> [--yara <rules.yara>]
+# From a completed case directory
+./scripts/syntropy-bind.sh /tmp/syntropy/FOR-20260603-153022/
+
+# With explicit acquisition hash
+./scripts/syntropy-bind.sh /tmp/syntropy/FOR-20260603-153022/ a1b2c3d4e5f6...
 ```
 
-Produces: SHA256, strings, hexdump, disassembly, and optional YARA matches.
+Generates `syntropy_report.json` with:
+- Full audit—acquire—analyze timeline
+- RWX alert summary and process list
+- SHA256 chain of custody
+- Artifact paths for all phases
+
+### syntropy-scan-offline.sh — Offline Dump Analysis
+
+Scans a raw memory dump (`.bin`) without requiring the original system. Uses the same system toolchain that K-Scanner relies on (`sha256sum`, `strings`, `hexdump`, `objdump`, `yara`):
+
+```bash
+# Basic analysis
+./scripts/syntropy-scan-offline.sh dumps/binaries/full_scan_20260603.bin
+
+# With YARA rules
+./scripts/syntropy-scan-offline.sh dumps/binaries/full_scan_20260603.bin --yara rules/malware.yara
+```
+
+Artifacts generated alongside the dump file:
+```
+full_scan_20260603.bin          ← original dump
+full_scan_20260603.bin.sha256   ← integrity hash
+full_scan_20260603.bin.strings.txt  ← extracted strings
+full_scan_20260603.bin.hex.txt  ← hexadecimal preview
+full_scan_20260603.bin.disasm.txt   ← x86-64 disassembly
+full_scan_20260603.bin.yara.txt ← YARA rule matches (if --yara)
+```
 
 ---
 
