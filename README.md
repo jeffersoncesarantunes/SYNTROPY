@@ -150,46 +150,53 @@ sudo ./kscanner --json > alerts.json
 
 ## ● How It Works
 
-SYNTROPY integrates three tools that communicate through a shared forensic protocol (`report.json`):
+SYNTROPY integrates three tools through a shared forensic protocol (`report.json`):
 
-```
-+--------------------------------------------------------------------------+
-|                                 SYNTROPY                                 |
-|                       Audit -> Acquire -> Analyze                        |
-+---------------+--------------------+-------------------------------------+
-|    LinSpec    |     S.I.R.E.N      |              K-Scanner              |
-|   (Auditor)   |    (Acquisitor)    |             (Analyzer)              |
-+---------------+--------------------+-------------------------------------+
-|   /proc/sys   |      /dev/mem      |          /proc/[PID]/maps           |
-| /sys/devices  |    /proc/kcore     |           /proc/[PID]/mem           |
-|               |    /proc/iomem     |                                     |
-+---------------+--------------------+-------------------------------------+
-|                                                                          |
-|  (1) LinSpec --reports/report.json--> SIREN (adaptive source selection)  |
-|                                                                          |
-|      (2) SIREN  --dumps/binaries/*.bin--> Post-acquisition analysis      |
-|           --dumps/reports/*.json--> Forensic report & manifest           |
-|              --dumps/checksums/*--> SHA256 integrity chain               |
-|                                                                          |
-|       (3) K-Scanner --JSON/CSV/terminal--> RWX alerts per process        |
-|          --build/dumps/*--> Per-region dumps + strings + disasm          |
-|                                                                          |
-+--------------------------------------------------------------------------+
-|                  SYNTROPY Scripts (orchestration layer)                  |
-|                                                                          |
-|        syntropy-run.sh           > (1) + (2) + (3) in one command        |
-|    syntropy-bind.sh          > syntropy_report.json (unified report)     |
-|         syntropy-scan-offline.sh  > Offline dump analysis (.bin)         |
-|                                                                          |
-+--------------------------------------------------------------------------+
-```
+**LinSpec** interfaces with:
 
-**Data flow:**
+* `/proc/sys`
+* `/sys/devices`
 
-1. **LinSpec** audita o kernel e produz `reports/report.json`
-2. **S.I.R.E.N** consome `report.json` para selecionar a fonte de aquisição → despeja a memória em `dumps/` com SHA256 + relatório JSON
-3. **K-Scanner** escaneia processos ao vivo via `/proc/[PID]/maps` → sinaliza regiões RWX → extrai evidências em `build/dumps/` com strings, desassembly e YARA
-4. **SYNTROPY Scripts** orquestram as 3 ferramentas e geram um relatório forense unificado com cadeia de custódia
+Audit flow:
+
+1. Collect kernel security parameters
+2. Normalize and classify values
+3. Compare against a hardened baseline
+4. Assign PASS / WARN / VULN states
+5. Export `reports/report.json`
+
+**S.I.R.E.N** interfaces with:
+
+* `/proc/iomem`
+* `/dev/mem`
+* `/proc/kcore`
+
+Acquisition flow:
+
+1. Load LinSpec audit data (`report.json`)
+2. Map valid System RAM regions via `/proc/iomem`
+3. Select acquisition source (`/dev/mem` or `/proc/kcore`)
+4. Dump physical memory with SHA256 integrity chain
+5. Generate forensic report and manifest
+
+**K-Scanner** interfaces with:
+
+* `/proc/[PID]/maps`
+* `/proc/[PID]/mem`
+
+Analysis flow:
+
+1. Parse `/proc/[PID]/maps`
+2. Identify memory permissions (R / W / X)
+3. Detect RWX violations (W^X policy breach)
+4. Classify process behavior
+5. Dump suspect regions with strings + disassembly
+
+**Orchestration layer:**
+
+* `syntropy-run.sh` — Full pipeline (LinSpec + SIREN + K-Scanner) in one command
+* `syntropy-bind.sh` — Unified `syntropy_report.json` from all tool outputs
+* `syntropy-scan-offline.sh` — Offline analysis of existing `.bin` dumps
 
 ---
 
