@@ -224,6 +224,17 @@ sudo ./K-Scanner/kscanner --help
 
 **Prerequisites:** `gcc`, `make`, `ncurses`, `binutils`, `coreutils`, `bash 4.x+`, root privileges.
 
+### YARA (Optional)
+
+[YARA](https://virustotal.github.io/yara/) is a pattern-matching engine used by K-Scanner's `--yara` flag and the offline scanner to identify malware signatures in memory dumps. Required only if using the `--yara` option in `syntropy-run.sh` or `syntropy-scan-offline.sh`.
+
+```bash
+# Arch Linux
+sudo pacman -S yara
+# Debian/Ubuntu
+sudo apt install yara
+```
+
 ---
 
 ## ● Incident Response Workflow

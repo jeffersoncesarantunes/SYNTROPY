@@ -11,6 +11,14 @@ Lightweight kernel hardening audit tool for Linux forensic triage and security b
 
 ---
 
+## ● Etymology & Origin
+
+**LinSpec** derives from **Linux** + **Inspection (Specification)**.
+
+The tool was conceptualized as a **forensic entry-point**, evaluating whether kernel-level protections are correctly enforced before deeper analysis begins.
+
+---
+
 ## ● Overview
 
 LinSpec is a specialized forensic utility designed to audit the security posture of the Linux Kernel in real-time.
@@ -204,14 +212,6 @@ cat /proc/cmdline
 [![Docs-Methodology](https://img.shields.io/badge/Forensic--Methodology-006400?style=flat-square\&logo=fortinet\&logoColor=white)](./docs/forensic_methodology.md)
 [![Docs-Reference](https://img.shields.io/badge/Audit--Reference-003366?style=flat-square\&logo=gitbook\&logoColor=white)](./docs/audit_reference.md)
 [![Docs-ThreatModel](https://img.shields.io/badge/Threat--Model-800000?style=flat-square\&logo=dependabot\&logoColor=white)](./docs/threat_model.md)
-
----
-
-## ● Etymology & Origin
-
-**LinSpec** derives from **Linux** + **Inspection (Specification)**.
-
-The tool was conceptualized as a **forensic entry-point**, evaluating whether kernel-level protections are correctly enforced before deeper analysis begins.
 
 ---
 

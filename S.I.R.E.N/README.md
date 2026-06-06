@@ -11,6 +11,12 @@ Linux memory acquisition tool with audit-aware forensic triage.
 
 ---
 
+## ● Etymology & Origin
+
+**S.I.R.E.N** stands for **S**hell **I**nteractive **R**untime **E**ntity **N**otifier. The name reflects its role as a runtime memory acquisition tool that actively monitors, identifies, and notifies analysts about forensic entities during live system execution — like a siren that sounds when memory artifacts require attention.
+
+---
+
 ## ● Overview
 
 S.I.R.E.N is a specialized forensic utility designed for controlled memory acquisition and integrity validation on Linux systems.
@@ -245,12 +251,6 @@ K-Scanner → Post-acquisition analysis
 [![Docs-Acquisition](https://img.shields.io/badge/Acquisition--Model-00599C?style=flat-square\&logo=linux\&logoColor=white)](./docs/ACQUISITION_MODEL.md)
 [![Docs-Workflow](https://img.shields.io/badge/Forensic--Workflow-444444?style=flat-square\&logo=gnu-bash\&logoColor=white)](./docs/FORENSIC_WORKFLOW.md)
 [![Docs-Safety](https://img.shields.io/badge/Safety--Model-CC0000?style=flat-square\&logo=opensourceinitiative\&logoColor=white)](./docs/SAFETY_MODEL.md)
-
----
-
-## ● Etymology & Origin
-
-**S.I.R.E.N** (Shell Interactive Runtime Entity Notifier) reflects its role in identifying runtime memory states and extracting forensic evidence during live system execution.
 
 ---
 
