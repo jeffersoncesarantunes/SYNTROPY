@@ -229,10 +229,7 @@ sudo ./K-Scanner/kscanner --help
 [YARA](https://virustotal.github.io/yara/) is a pattern-matching engine used by K-Scanner's `--yara` flag and the offline scanner to identify malware signatures in memory dumps. Required only if using the `--yara` option in `syntropy-run.sh` or `syntropy-scan-offline.sh`.
 
 ```bash
-# Arch Linux
 sudo pacman -S yara
-# Debian/Ubuntu
-sudo apt install yara
 ```
 
 ---
