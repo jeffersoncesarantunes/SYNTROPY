@@ -33,4 +33,5 @@ if [[ -n "$YARA_RULE" ]]; then
     printf "  yara     -> %s\n" "$DUMP.yara.txt"
 fi
 
-printf "\033[32m[SYNTROPY] Done. %d artifacts generated.\033[0m\n" "$(ls "$DUMP".* 2>/dev/null | wc -l)"
+n=0; for f in "$DUMP".*; do [ -f "$f" ] && n=$((n+1)); done 2>/dev/null
+printf "\033[32m[SYNTROPY] Done. %d artifacts generated.\033[0m\n" "$n"
