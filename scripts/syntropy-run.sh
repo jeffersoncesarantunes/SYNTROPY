@@ -54,7 +54,7 @@ printf "\033[36m[3/4]\033[0m K-Scanner -- Live RWX Analysis...\n"
 cd "$SYNTROPY_DIR/K-Scanner"
 EXTRA_ARGS=(--silent-jit)
 [[ -n "$YARA_RULE" ]] && EXTRA_ARGS+=(--yara "$YARA_RULE")
-sudo ./kscanner --json "${EXTRA_ARGS[@]}" 2>/dev/null | sudo tee "$CASE_ROOT/analyze/kscan_results.json" > /dev/null || true
+sudo ./kscanner --json "${EXTRA_ARGS[@]}" 2>/dev/null | tee "$CASE_ROOT/analyze/kscan_results.json" > /dev/null || true
 ALERTS=$(grep -c '"RWX ALERT"' "$CASE_ROOT/analyze/kscan_results.json" 2>/dev/null || echo 0)
 printf "\033[32m       ->\033[0m %s alerts, saved to analyze/kscan_results.json\n" "$ALERTS"
 

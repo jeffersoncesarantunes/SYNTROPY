@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CASE_ROOT="${1:-.}"
-DUMP_HASH="${2:-unknown}"
+export CASE_ROOT="${1:-.}"
+export DUMP_HASH="${2:-unknown}"
 
 exec python3 -c "
 import json, os, glob, sys
 
-root = '$CASE_ROOT'
-dump_hash = '$DUMP_HASH'
+root = os.environ['CASE_ROOT']
+dump_hash = os.environ['DUMP_HASH']
 
 audit = {}
 audit_path = os.path.join(root, 'audit', 'report.json')
