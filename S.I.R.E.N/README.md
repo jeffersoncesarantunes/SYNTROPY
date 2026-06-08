@@ -140,13 +140,13 @@ S.I.R.E.N standardizes this process by combining audit-aware acquisition, adapti
 
 ## ● Project in Action
 
-![Memory Mapping](./Imagens/siren1.png)
+![Memory Mapping](./Images/siren1.png)
 *1 - Detection of valid System RAM regions via `/proc/iomem`.*
 
-![Pipeline Validation](./Imagens/siren2.png)
+![Pipeline Validation](./Images/siren2.png)
 *2 - Controlled extraction and validation pipeline.*
 
-![Full Memory Extraction](./Imagens/siren3.png)
+![Full Memory Extraction](./Images/siren3.png)
 *3 - Full acquisition using `/proc/kcore` with integrity verification.*
 
 ---
@@ -211,7 +211,7 @@ K-Scanner → Post-acquisition analysis
 │   ├── forensic_workflow.md
 │   └── safety_model.md
 ├── dumps/
-├── Imagens/
+├── Images/
 │   ├── siren1.png
 │   ├── siren2.png
 │   └── siren3.png

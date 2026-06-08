@@ -352,13 +352,13 @@ It transforms raw kernel telemetry into a structured, court-ready forensic chain
 
 ## ● Project in Action
 
-![Overview](K-Scanner/Imagens/kscanner1.png)  
+![Overview](K-Scanner/Images/kscanner1.png)  
 *1 - Live forensic mode identifying RWX memory regions across active processes.*
 
-![Acquisition](S.I.R.E.N/Imagens/siren3.png)  
+![Acquisition](S.I.R.E.N/Images/siren3.png)  
 *2 - Full memory acquisition with integrity verification and structured reporting.*
 
-![Validation](LinSpec/Imagens/linspec3.png)  
+![Validation](LinSpec/Images/linspec3.png)  
 *3 - Cross-validation of kernel audit results against live system state.*
 
 ---

@@ -147,13 +147,13 @@ cat /proc/cmdline
 
 ## ● Project in Action
 
-![System Audit Overview](./Imagens/linspec1.png)
+![System Audit Overview](./Images/linspec1.png)
 *1 - System Audit Overview. Execution of the forensic engine performing baseline triage.*
 
-![Data Integrity & Reporting](./Imagens/linspec2.png)
+![Data Integrity & Reporting](./Images/linspec2.png)
 *2 - Data Integrity & Reporting. Validation between terminal output and structured reports.*
 
-![Forensic Kernel Validation](./Imagens/linspec3.png)
+![Forensic Kernel Validation](./Images/linspec3.png)
 *3 - Forensic Kernel Validation. Cross-checking LinSpec results with live kernel state.*
 
 ---
@@ -166,7 +166,7 @@ cat /proc/cmdline
 │   ├── audit_reference.md
 │   ├── forensic_methodology.md
 │   └── threat_model.md
-├── Imagens/
+├── Images/
 │   ├── linspec1.png
 │   ├── linspec2.png
 │   └── linspec3.png
