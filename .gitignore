@@ -1,10 +1,3 @@
-# ==============================================================================
-# SYNTROPY - Git Ignore Configuration
-# Security-Focused Meta-Repository
-# ==============================================================================
-
-# Environment Files (CRITICAL - never commit secrets)
-# ------------------------------------------------------------------------------
 .env
 .env.local
 .env.*.local
@@ -13,9 +6,6 @@
 .env.staging
 .env.test
 .env.example
-
-# Secrets & Credentials
-# ------------------------------------------------------------------------------
 *.pem
 *.key
 *.p12
@@ -37,9 +27,6 @@ application.properties
 .npmrc
 .pypirc
 .netrc
-
-# SSH & GPG
-# ------------------------------------------------------------------------------
 id_rsa
 id_rsa.pub
 id_ed25519
@@ -48,9 +35,6 @@ authorized_keys
 known_hosts
 .ssh/
 .gnupg/
-
-# IDE & Editor
-# ------------------------------------------------------------------------------
 .idea/
 .vscode/
 *.swp
@@ -60,9 +44,6 @@ known_hosts
 .project
 .classpath
 .settings/
-
-# OS Files
-# ------------------------------------------------------------------------------
 .DS_Store
 .DS_Store?
 .AppleDouble
@@ -71,18 +52,12 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
-
-# History & Logs
-# ------------------------------------------------------------------------------
 .history
 .bash_history
 .zsh_history
 .zhistory
 .fish_history
 *.log
-
-# Build Artifacts
-# ------------------------------------------------------------------------------
 build/
 dist/
 target/
@@ -95,9 +70,6 @@ obj/
 *.exe
 *.dll
 *.dylib
-
-# Package Manager Dirs
-# ------------------------------------------------------------------------------
 node_modules/
 vendor/
 vendor/bundle/
@@ -107,9 +79,6 @@ vendor/bundle/
 .sass-cache/
 pip-log.txt
 pip-wheel-metadata/
-
-# Database Files
-# ------------------------------------------------------------------------------
 *.sql
 *.db
 *.sqlite
@@ -120,9 +89,6 @@ pip-wheel-metadata/
 backup.sql
 dump.sql
 database.sql
-
-# Cloud & Infrastructure
-# ------------------------------------------------------------------------------
 .terraform/
 terraform.tfstate
 terraform.tfstate.*
@@ -134,18 +100,12 @@ kubeconfig
 .aws/
 .docker/config.json
 .gcloud/
-
-# Backup Files
-# ------------------------------------------------------------------------------
 *.bak
 *.backup
 *.dump
 *.swp
 *.orig
 *.old
-
-# Test & Coverage
-# ------------------------------------------------------------------------------
 coverage/
 .coverage
 htmlcov/
@@ -155,10 +115,6 @@ htmlcov/
 __pycache__/
 *.pyc
 *.pyo
-
-# Submodule artifacts (SYNTROPY-specific)
-# ------------------------------------------------------------------------------
-# Forensic evidence files from submodules
 **/dumps/
 **/reports/
 **/results/

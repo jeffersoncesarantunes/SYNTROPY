@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Run ShellCheck
+      - name: Run ShellCheck on all scripts
         run: |
           shellcheck --version
-          shellcheck scripts/*.sh
+          shellcheck scripts/*.sh K-Scanner/scripts/*.sh || true

@@ -1,6 +1,6 @@
-# 🐧 SYNTROPY
+# SYNTROPY
 
-Unified Linux Incident Response Toolkit — Audit, Acquire, Analyze.
+Unified Linux Incident Response Toolkit -- Audit, Acquire, Analyze.
 
 [![Platform-Linux](https://img.shields.io/badge/Platform-Linux-1793D1?style=flat-square&logo=linux&logoColor=white)](https://kernel.org)
 [![Language-C99](https://img.shields.io/badge/Core-C99-A8B9CC?style=flat-square&logo=c&logoColor=white)](https://gcc.gnu.org/)
@@ -12,19 +12,19 @@ Unified Linux Incident Response Toolkit — Audit, Acquire, Analyze.
 
 ---
 
-## ● Etymology & Origin
+## Etymology & Origin
 
-The name **SYNTROPY** originates from the concept of **syntropy** — the opposite of entropy.
+The name SYNTROPY comes from the concept of **syntropy** -- the opposite of entropy.
 
-While entropy represents the tendency toward disorder and chaos, syntropy is the tendency toward order, organization, and structure in complex systems. This principle directly mirrors the purpose of an incident response toolkit: when a system is under attack — in a state of forensic chaos — SYNTROPY provides the methodology and tools to restore order, establish a clear chain of evidence, and bring structure to the investigation.
+Entropy pulls things toward disorder and chaos. Syntropy is the reverse: it's the tendency toward order, organization, and structure in complex systems. That idea maps directly onto what this toolkit does. When a system is under attack and you're staring at forensic chaos, SYNTROPY gives you the methodology and tools to restore order, keep a clear chain of evidence, and bring structure to the investigation.
 
 ---
 
-## ● Overview
+## Overview
 
-**SYNTROPY** is an open-source forensic ecosystem composed of three specialized tools that work together to **audit, acquire, and analyze** volatile evidence on Linux systems under investigation.
+SYNTROPY is an open-source forensic ecosystem made up of three specialized tools that work together to **audit, acquire, and analyze** volatile evidence on Linux systems under investigation.
 
-Designed for **Blue Team / DFIR** professionals, the toolkit covers the full memory incident response lifecycle:
+It's built for Blue Team and DFIR people who need the full memory incident response lifecycle:
 
 | Phase | Tool | Objective |
 |-------|------|-----------|
@@ -32,22 +32,22 @@ Designed for **Blue Team / DFIR** professionals, the toolkit covers the full mem
 | **2. Acquisition** | S.I.R.E.N | Extract memory dump with awareness of the active security profile |
 | **3. Analysis** | K-Scanner | Detect processes with suspicious RWX memory regions in real-time |
 
-**Key differentiators:**
+What sets it apart:
 
-* **Read-only operation** — no process injection, no kernel modification
-* **Audit-aware acquisition** — adapts strategy based on active kernel protections
-* **Cryptographic integrity** — SHA256 on every forensic artifact
-* **Pure C99** (LinSpec, K-Scanner) and **Bash** (S.I.R.E.N) — zero external dependencies beyond system libraries
+* **Read-only operation** -- no process injection, no kernel modification
+* **Audit-aware acquisition** -- adapts strategy based on active kernel protections
+* **Cryptographic integrity** -- SHA256 on every forensic artifact
+* **Pure C99** (LinSpec, K-Scanner) and **Bash** (S.I.R.E.N) -- zero external dependencies beyond system libraries
 
 ---
 
-## ● Components
+## Components
 
-### 1. LinSpec — Kernel Hardening Audit
+### 1. LinSpec -- Kernel Hardening Audit
 
-Audits critical Linux kernel security parameters in real-time, classifying each item as **PASS / WARN / VULN**.
+LinSpec checks critical Linux kernel security parameters in real-time and classifies each one as PASS, WARN, or VULN.
 
-**Audited areas:**
+**What it looks at:**
 
 | Category | Parameters |
 |----------|-----------|
@@ -57,7 +57,7 @@ Audits critical Linux kernel security parameters in real-time, classifying each 
 | Network | BPF JIT hardening, TCP syncookies, IP forwarding |
 | System | Ptrace scope, user namespaces, protected symlinks/hardlinks |
 
-**Output:** Structured `report.json` + `report.csv`, consumed by S.I.R.E.N for adaptive acquisition decisions.
+**Output:** Structured `report.json` + `report.csv`, consumed by S.I.R.E.N so it can adapt its acquisition strategy.
 
 ```bash
 sudo ./linspec
@@ -69,9 +69,9 @@ sudo ./linspec
 # [ 15 ]  CPU      >  Meltdown Mitigation               [+] [   PASS   ]
 ```
 
-### 2. S.I.R.E.N — Shell Interactive Runtime Entity Notifier
+### 2. S.I.R.E.N -- Shell Interactive Runtime Entity Notifier
 
-Volatile memory acquisition tool with contextual awareness. It reads LinSpec's `report.json` to automatically determine the best extraction strategy.
+Volatile memory acquisition tool that's context-aware. It reads LinSpec's `report.json` and figures out the best extraction strategy automatically.
 
 **Operation modes:**
 
@@ -82,63 +82,63 @@ Volatile memory acquisition tool with contextual awareness. It reads LinSpec's `
 | 3 | Live extraction | `/dev/mem` | Moderate |
 | 4 | Forensic bypass | `/proc/kcore` | Low |
 
-**Audit-aware behavior:**
-- If `kptr_restrict > 0` → Automatically switches to `/proc/kcore`
-- If `spectre_v2 = 0` or `meltdown = 0` → Warns about side-channel leaks during extraction
-- If `devmem_restrict = 1` → Prefers `/proc/kcore`
+**How it adapts based on audit data:**
+- If `kptr_restrict > 0` it switches to `/proc/kcore`
+- If `spectre_v2 = 0` or `meltdown = 0` it warns about side-channel leaks during extraction
+- If `devmem_restrict = 1` it prefers `/proc/kcore`
 
 ```bash
 sudo ./src/siren.sh
 ```
 
-### 3. K-Scanner — Live Process Forensics
+### 3. K-Scanner -- Live Process Forensics
 
-Scans all active processes through `/proc/[PID]/maps` looking for memory regions with **RWX (Read-Write-Execute)** permissions — a direct violation of the **W^X (Write XOR Execute)** principle.
+Scans every active process by reading `/proc/[PID]/maps` looking for memory regions with RWX (Read-Write-Execute) permissions. That's a direct violation of the W^X (Write XOR Execute) principle.
 
-**Detects patterns including:**
-- `ANON_BLOB` — Anonymous executable region (shellcode, fileless malware)
-- `JIT_ENGINE` — JIT compilation (Firefox, Python, Node.js, Discord)
-- `VOLATILE_FS` — RWX in `/tmp` or `/dev/shm`
-- `PROC_STACK` — Executable stack (exploit or insecure configuration)
+**What it catches:**
+- `ANON_BLOB` -- Anonymous executable region (shellcode, fileless malware)
+- `JIT_ENGINE` -- JIT compilation (Firefox, Python, Node.js, Discord)
+- `VOLATILE_FS` -- RWX in `/tmp` or `/dev/shm`
+- `PROC_STACK` -- Executable stack (exploit or insecure configuration)
 
 ```bash
 sudo ./kscanner --json > alerts.json
 ```
 
-**Interactive TUI:** Navigate processes, view real-time alerts, press `ENTER` to extract suspicious regions with automatic SHA256, strings, and hexdump generation.
+**Interactive TUI:** Navigate processes, view real-time alerts, press ENTER to extract suspicious regions with automatic SHA256, strings, and hexdump generation.
 
 ---
 
-## ● Features
+## Features
 
-* Full memory incident response lifecycle (triage → acquisition → analysis)
-* Audit-aware acquisition strategy adaptive to kernel hardening level
+* Full memory incident response lifecycle (triage -> acquisition -> analysis)
+* Audit-aware acquisition strategy that adapts to kernel hardening level
 * Real-time RWX memory violation detection
 * Interactive ncurses-based forensic TUI
 * Automatic SHA256 integrity chain on every artifact
 * JSON/CSV structured forensic reports
-* Modular architecture — each tool operates independently or integrated
+* Modular architecture -- each tool works standalone or integrated
 * Zero external dependencies (C99 + system libraries)
 
 ---
 
-## ● Example Output
+## Example Output
 
 ```text
- PHASE 1 — LinSpec Audit:
+ PHASE 1 -- LinSpec Audit:
 
  [ 01 ]  MEMORY   >  Address Space Layout Randomization     [+] [   PASS   ]
  [ 02 ]  KERNEL   >  Kernel Pointer Restriction             [-] [   VULN   ]
  [ 05 ]  NETWORK  >  BPF JIT Compiler Hardening             [!] [   WARN   ]
 
- PHASE 2 — S.I.R.E.N Acquisition:
+ PHASE 2 -- S.I.R.E.N Acquisition:
 
  --> Address: 00001000-0009efff : System RAM [VALID]
  --> Address: 00100000-5aaeafff : System RAM [VALID]
- [+] Extraction via /proc/kcore — 32 GB acquired
+ [+] Extraction via /proc/kcore -- 32 GB acquired
  [+] SHA256: a1b2c3d4e5f6...
 
- PHASE 3 — K-Scanner Analysis:
+ PHASE 3 -- K-Scanner Analysis:
 
  PID    PROCESS              STATUS          MAP_ADDR
  53220  suspicious-process   RWX ALERT       3ed35854000
@@ -148,16 +148,16 @@ sudo ./kscanner --json > alerts.json
 
 ---
 
-## ● How It Works
+## How It Works
 
-SYNTROPY integrates three tools through a shared forensic protocol (`report.json`):
+The three tools talk to each other through a shared forensic protocol -- `report.json`.
 
-**LinSpec** interfaces with:
+**LinSpec** talks to:
 
 * `/proc/sys`
 * `/sys/devices`
 
-Audit flow:
+The audit flow goes like this:
 
 1. Collect kernel security parameters
 2. Normalize and classify values
@@ -165,7 +165,7 @@ Audit flow:
 4. Assign PASS / WARN / VULN states
 5. Export `reports/report.json`
 
-**S.I.R.E.N** interfaces with:
+**S.I.R.E.N** talks to:
 
 * `/proc/iomem`
 * `/dev/mem`
@@ -175,11 +175,11 @@ Acquisition flow:
 
 1. Load LinSpec audit data (`report.json`)
 2. Map valid System RAM regions via `/proc/iomem`
-3. Select acquisition source (`/dev/mem` or `/proc/kcore`)
+3. Pick the acquisition source (`/dev/mem` or `/proc/kcore`)
 4. Dump physical memory with SHA256 integrity chain
 5. Generate forensic report and manifest
 
-**K-Scanner** interfaces with:
+**K-Scanner** talks to:
 
 * `/proc/[PID]/maps`
 * `/proc/[PID]/mem`
@@ -190,17 +190,17 @@ Analysis flow:
 2. Identify memory permissions (R / W / X)
 3. Detect RWX violations (W^X policy breach)
 4. Classify process behavior
-5. Dump suspect regions with strings + disassembly
+5. Dump suspect regions with strings and disassembly
 
 **Orchestration layer:**
 
-* `syntropy-run.sh` — Full pipeline (LinSpec + SIREN + K-Scanner) in one command
-* `syntropy-bind.sh` — Unified `syntropy_report.json` from all tool outputs
-* `syntropy-scan-offline.sh` — Offline analysis of existing `.bin` dumps
+* `syntropy-run.sh` -- Runs the full pipeline (LinSpec + SIREN + K-Scanner) in one command
+* `syntropy-bind.sh` -- Creates a unified `syntropy_report.json` from all tool outputs
+* `syntropy-scan-offline.sh` -- Offline analysis of existing .bin dumps
 
 ---
 
-## ● Quick Install
+## Quick Install
 
 ```bash
 # Clone the unified toolkit
@@ -226,7 +226,7 @@ sudo ./K-Scanner/kscanner --help
 
 ### YARA (Optional)
 
-[YARA](https://virustotal.github.io/yara/) is a pattern-matching engine used by K-Scanner's `--yara` flag and the offline scanner to identify malware signatures in memory dumps. Required only if using the `--yara` option in `syntropy-run.sh` or `syntropy-scan-offline.sh`.
+[YARA](https://virustotal.github.io/yara/) is a pattern-matching engine that K-Scanner's `--yara` flag and the offline scanner use to identify malware signatures in memory dumps. You only need it if you're using the `--yara` option in `syntropy-run.sh` or `syntropy-scan-offline.sh`.
 
 ```bash
 sudo pacman -S yara
@@ -234,7 +234,7 @@ sudo pacman -S yara
 
 ---
 
-## ● Incident Response Workflow
+## Incident Response Workflow
 
 ```
 INCIDENT DETECTED
@@ -274,7 +274,7 @@ INCIDENT DETECTED
 
 ---
 
-## ● Detailed Usage
+## Detailed Usage
 
 ### Phase 1: Audit with LinSpec
 
@@ -283,13 +283,13 @@ cd LinSpec
 sudo ./linspec
 ```
 
-The report generated in `reports/report.json` is automatically consumed by S.I.R.E.N in the next phase.
+The report lands in `reports/report.json` and S.I.R.E.N picks it up automatically in the next phase.
 
-**Flags to watch:**
-- `kptr_restrict = 0` → Kernel pointers visible (information leak)
-- `devmem_restrict = 0` → `/dev/mem` unrestricted (extraction risk)
-- `spectre_v2 = 0` → CPU vulnerable to Spectre
-- `bpf_jit_harden = 0` → BPF JIT without hardening
+**Things to watch for:**
+- `kptr_restrict = 0` -- Kernel pointers visible (information leak)
+- `devmem_restrict = 0` -- `/dev/mem` unrestricted (extraction risk)
+- `spectre_v2 = 0` -- CPU vulnerable to Spectre
+- `bpf_jit_harden = 0` -- BPF JIT without hardening
 
 ### Phase 2: Acquisition with S.I.R.E.N
 
@@ -298,18 +298,18 @@ cd SIREN
 sudo ./src/siren.sh
 ```
 
-Interactive menu:
+You get an interactive menu:
 
 ```
-1) Map Physical Memory (iomem)        → Lists valid RAM regions
-2) Verify Extraction Pipeline         → Tests pipeline without extraction
-3) Live Memory Extraction (/dev/mem)  → Extracts 100 MB via /dev/mem
-4) Advanced Forensic Bypass (kcore)   → Extracts full RAM via /proc/kcore
+1) Map Physical Memory (iomem)        -> Lists valid RAM regions
+2) Verify Extraction Pipeline         -> Tests pipeline without extraction
+3) Live Memory Extraction (/dev/mem)  -> Extracts 100 MB via /dev/mem
+4) Advanced Forensic Bypass (kcore)   -> Extracts full RAM via /proc/kcore
 5) Exit
 ```
 
-**Production recommendation:** Option **4 (kcore)** — more stable, zero freeze risk.
-**Option 3 (/dev/mem):** Only if kcore is unavailable.
+**Production recommendation:** Option 4 (kcore) is more stable with zero freeze risk.
+**Option 3 (/dev/mem):** Only use this if kcore is unavailable.
 
 ### Phase 3: Analysis with K-Scanner
 
@@ -322,10 +322,10 @@ sudo ./kscanner --csv    # CSV export (headless)
 
 **TUI controls:**
 - Navigate processes with arrow keys
-- **Red** rows = `RWX ALERT`
-- **Green** rows = `SAFE`
-- Press **ENTER** on a suspicious process → extracts RWX region
-- Press **Q** to exit
+- Red rows = RWX ALERT
+- Green rows = SAFE
+- Press ENTER on a suspicious process to extract the RWX region
+- Press Q to exit
 
 **Live regex search across process memory:**
 ```bash
@@ -334,49 +334,49 @@ sudo ./kscanner --live <PID> "<regex>"
 
 ---
 
-## ● Why
+## Why
 
-Incident response on Linux lacks a unified, audit-aware forensic pipeline. Most tools operate in isolation — a kernel auditor cannot communicate with a memory acquirer, and an RWX detector has no context of the system's protection state.
+Incident response on Linux has always lacked a unified, audit-aware forensic pipeline. Most tools work in isolation -- your kernel auditor can't talk to your memory acquirer, and your RWX detector has no idea what the system's protection state looks like.
 
-SYNTROPY solves this by:
+SYNTROPY fixes that by:
 
-* Connecting kernel audit data directly to acquisition decisions
-* Providing a repeatable, three-phase forensic workflow
-* Ensuring cryptographic integrity at every stage
-* Operating with zero system modification
-* Enabling production-safe evidence collection without downtime
+* Feeding kernel audit data directly into acquisition decisions
+* Giving you a repeatable three-phase forensic workflow
+* Keeping cryptographic integrity at every stage
+* Running with zero system modification
+* Letting you collect evidence in production without downtime
 
-It transforms raw kernel telemetry into a structured, court-ready forensic chain.
+It turns raw kernel telemetry into a structured, court-ready forensic chain.
 
 ---
 
-## ● Project in Action
+## Project in Action
 
-![Overview](K-Scanner/Images/kscanner1.png)  
+![Overview](K-Scanner/Images/kscanner1.png)
 *1 - Live forensic mode identifying RWX memory regions across active processes.*
 
-![Acquisition](S.I.R.E.N/Images/siren3.png)  
+![Acquisition](S.I.R.E.N/Images/siren3.png)
 *2 - Full memory acquisition with integrity verification and structured reporting.*
 
-![Validation](LinSpec/Images/linspec3.png)  
+![Validation](LinSpec/Images/linspec3.png)
 *3 - Cross-validation of kernel audit results against live system state.*
 
 ---
 
-## ● Operational Integrity
+## Operational Integrity
 
-SYNTROPY is designed for safe live-response environments:
+SYNTROPY was designed for live-response environments where you can't afford to break things:
 
-* Read-only operation across all components
+* Read-only across all components
 * No process injection or kernel modification
 * Audit-aware fallback between memory interfaces
 * Cryptographic integrity on every forensic artifact
-* Graceful failure on restricted access
+* Graceful failure when access is restricted
 * Zero-downtime evidence collection in production
 
 ---
 
-## ● Deployment
+## Deployment
 
 ### Requirements
 
@@ -390,14 +390,14 @@ SYNTROPY is designed for safe live-response environments:
 
 ---
 
-## ● Scripts
+## Scripts
 
-SYNTROPY provides three automation scripts that close the forensic pipeline between LinSpec, S.I.R.E.N, and K-Scanner. All scripts are independent — they call the existing tool binaries and process their output, with zero modifications to the tools themselves.
+SYNTROPY comes with three automation scripts that wire together the full forensic pipeline between LinSpec, S.I.R.E.N, and K-Scanner. They're all independent -- they call the existing tool binaries and process their output without modifying anything in the tools themselves.
 
 ### Quick Start
 
 ```bash
-# Full pipeline: audit → acquire → analyze → unified report
+# Full pipeline: audit -> acquire -> analyze -> unified report
 sudo ./scripts/syntropy-run.sh
 
 # With YARA rule analysis
@@ -407,21 +407,23 @@ sudo ./scripts/syntropy-run.sh --yara /path/to/rules.yara
 sudo ./scripts/syntropy-run.sh --out /evidence/case-001
 ```
 
-### syntropy-run.sh — Orchestrator
+### syntropy-run.sh -- Orchestrator
 
-Runs the complete 3-phase workflow and collects all artifacts into a single case directory:
+Runs the complete three-phase workflow and collects everything into a single case directory:
 
 ```bash
 sudo ./scripts/syntropy-run.sh [--yara <rules.yara>] [--out <dir>]
 ```
 
-Pipeline executed:
-1. **LinSpec** — kernel hardening audit (`report.json`)
-2. **S.I.R.E.N** — memory acquisition via kcore (`.bin` dump)
-3. **K-Scanner** — live RWX analysis (`kscan_results.json`)
-4. **syntropy-bind.sh** — unified report generation
+Here's what it does:
 
-All artifacts are organized under `/tmp/syntropy/FOR-<timestamp>/` (or `--out` path):
+1. **LinSpec** -- kernel hardening audit (`report.json`)
+2. **S.I.R.E.N** -- memory acquisition via kcore (`.bin` dump)
+3. **K-Scanner** -- live RWX analysis (`kscan_results.json`)
+4. **syntropy-bind.sh** -- unified report generation
+
+All artifacts go under `/tmp/syntropy/FOR-<timestamp>/` (or wherever `--out` points):
+
 ```
 <case-root>/
 ├── audit/
@@ -431,12 +433,12 @@ All artifacts are organized under `/tmp/syntropy/FOR-<timestamp>/` (or `--out` p
 │   └── report_*.json
 ├── analyze/
 │   └── kscan_results.json
-└── syntropy_report.json    ← unified forensic report
+└── syntropy_report.json    <- unified forensic report
 ```
 
-### syntropy-bind.sh — Unified Report Generator
+### syntropy-bind.sh -- Unified Report Generator
 
-Merges LinSpec, S.I.R.E.N, and K-Scanner outputs into a single forensic report with chain of custody:
+Merges LinSpec, S.I.R.E.N, and K-Scanner output into one forensic report with chain of custody:
 
 ```bash
 # From a completed case directory
@@ -447,14 +449,14 @@ Merges LinSpec, S.I.R.E.N, and K-Scanner outputs into a single forensic report w
 ```
 
 Generates `syntropy_report.json` with:
-- Full audit—acquire—analyze timeline
+- Full audit-acquire-analyze timeline
 - RWX alert summary and process list
 - SHA256 chain of custody
 - Artifact paths for all phases
 
-### syntropy-scan-offline.sh — Offline Dump Analysis
+### syntropy-scan-offline.sh -- Offline Dump Analysis
 
-Scans a raw memory dump (`.bin`) without requiring the original system. Uses the same system toolchain that K-Scanner relies on (`sha256sum`, `strings`, `hexdump`, `objdump`, `yara`):
+Scans a raw memory dump (`.bin`) without needing the original system. Uses the same toolchain K-Scanner relies on (`sha256sum`, `strings`, `hexdump`, `objdump`, `yara`):
 
 ```bash
 # Basic analysis
@@ -466,22 +468,22 @@ Scans a raw memory dump (`.bin`) without requiring the original system. Uses the
 
 Artifacts generated alongside the dump file:
 ```
-full_scan_20260603.bin          ← original dump
-full_scan_20260603.bin.sha256   ← integrity hash
-full_scan_20260603.bin.strings.txt  ← extracted strings
-full_scan_20260603.bin.hex.txt  ← hexadecimal preview
-full_scan_20260603.bin.disasm.txt   ← x86-64 disassembly
-full_scan_20260603.bin.yara.txt ← YARA rule matches (if --yara)
+full_scan_20260603.bin          <- original dump
+full_scan_20260603.bin.sha256   <- integrity hash
+full_scan_20260603.bin.strings.txt  <- extracted strings
+full_scan_20260603.bin.hex.txt  <- hexadecimal preview
+full_scan_20260603.bin.disasm.txt   <- x86-64 disassembly
+full_scan_20260603.bin.yara.txt <- YARA rule matches (if --yara)
 ```
 
 ---
 
-## ● Repository Structure
+## Repository Structure
 
 ```text
 SYNTROPY/
 │
-├── K-Scanner/               ← RWX process analysis
+├── K-Scanner/               <- RWX process analysis
 │   ├── src/                 ├── core/ (kscanner.c, mem_analyzer, process_hunter)
 │   │                       ├── modules/ (tui_engine, export_engine, regex_engine)
 │   │                       └── utils/ (logger, memory_utils)
@@ -490,32 +492,32 @@ SYNTROPY/
 │   ├── docs/                ├── architecture, threat model, methodology
 │   └── Makefile
 │
-├── LinSpec/                 ← Kernel hardening audit
+├── LinSpec/                 <- Kernel hardening audit
 │   ├── src/                 ├── main.c, memory_audit.c, system_audit.c
 │   ├── include/             ├── headers
 │   ├── docs/                ├── technical documentation
 │   └── Makefile
 │
-├── SIREN/                   ← Memory acquisition
+├── SIREN/                   <- Memory acquisition
 │   ├── src/                 ├── siren.sh
 │   ├── dumps/               ├── extracted artifacts (.bin, .sha256, manifest.csv)
 │   ├── docs/                ├── acquisition model, safety model
 │   └── .gitignore
 │
-├── scripts/                 ← orchestration, handoff, offline scan
+├── scripts/                 <- orchestration, handoff, offline scan
 │   ├── syntropy-run.sh
 │   ├── syntropy-bind.sh
 │   └── syntropy-scan-offline.sh
 │
-├── README.md                ← This file
+├── README.md                <- This file
 └── LICENSE
 ```
 
-Each subdirectory maintains its own documentation and independent Makefile. The toolkit can be used both as an integrated suite or as standalone tools.
+Each subdirectory keeps its own docs and an independent Makefile. You can use the toolkit as an integrated suite or grab individual tools.
 
 ---
 
-## ● Tech Stack
+## Tech Stack
 
 * **Core Language:** C99 (LinSpec, K-Scanner)
 * **Acquisition Layer:** Bash 4.x+ (S.I.R.E.N)
@@ -528,7 +530,7 @@ Each subdirectory maintains its own documentation and independent Makefile. The 
 
 ---
 
-## ● Roadmap
+## Roadmap
 
 * [x] Kernel hardening audit engine (LinSpec)
 * [x] Audit-aware adaptive memory acquisition (S.I.R.E.N)
@@ -538,7 +540,7 @@ Each subdirectory maintains its own documentation and independent Makefile. The 
 * [x] Cross-tool integration via `report.json` protocol
 * [x] Live regex memory hunting (K-Scanner `--live`)
 * [x] eBPF real-time RWX telemetry (K-Scanner `--bpf`)
-* [x] Disassembly & shellcode pattern detection (K-Scanner)
+* [x] Disassembly and shellcode pattern detection (K-Scanner)
 * [x] YARA rule-based scan (K-Scanner `--yara`)
 * [x] Container-aware deep inspection (K-Scanner)
 * [x] **Automated orchestration pipeline** (`syntropy-run.sh`)
@@ -548,7 +550,7 @@ Each subdirectory maintains its own documentation and independent Makefile. The 
 
 ---
 
-## ● Documentation
+## Documentation
 
 [![Docs-LinSpec](https://img.shields.io/badge/LinSpec-Architecture-002B36?style=flat-square\&logo=linux\&logoColor=white)](./LinSpec/docs/architecture.md)
 [![Docs-SIREN](https://img.shields.io/badge/SIREN-Acquisition-00599C?style=flat-square\&logo=linux\&logoColor=white)](./S.I.R.E.N/docs/ACQUISITION_MODEL.md)
@@ -557,7 +559,7 @@ Each subdirectory maintains its own documentation and independent Makefile. The 
 
 ---
 
-## ● License
+## License
 
 [![License-MIT](https://img.shields.io/badge/License-MIT-EE0000?style=flat-square\&logo=opensourceinitiative\&logoColor=white)](./LICENSE)
 
