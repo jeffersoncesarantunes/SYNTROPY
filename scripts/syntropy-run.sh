@@ -18,6 +18,24 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+validate_path() {
+    local path=$1
+    if [[ -n "$path" && "$path" != /tmp/syntropy/* && "$path" != /* ]]; then
+        echo "Error: --out must be an absolute path" >&2
+        exit 1
+    fi
+}
+validate_path "$CASE_ROOT"
+
+validate_yara_rule() {
+    local rule=$1
+    if [[ -n "$rule" && ! -f "$rule" ]]; then
+        echo "Error: YARA rule file not found: $rule" >&2
+        exit 1
+    fi
+}
+validate_yara_rule "$YARA_RULE"
+
 mkdir -p "$CASE_ROOT"/{audit,acquire,analyze}
 
 printf "\033[36m[SYNTROPY]\033[0m Case: %s\n" "$CASE_ID"
@@ -31,7 +49,7 @@ cp reports/report.csv "$CASE_ROOT/audit/" 2>/dev/null || true
 printf "\033[32m       ->\033[0m %s/audit/report.json\n" "$CASE_ROOT"
 
 printf "\033[36m[2/4]\033[0m S.I.R.E.N -- Memory Acquisition (kcore)...\n"
-cd "$SYNTROPY_DIR/SIREN"
+cd "$SYNTROPY_DIR/S.I.R.E.N"
 mkdir -p dumps/binaries dumps/reports dumps/checksums
 sudo bash src/siren.sh <<< $'4\n\n5\n' 2>/dev/null || true
 

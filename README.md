@@ -37,7 +37,7 @@ What sets it apart:
 * **Read-only operation** -- no process injection, no kernel modification
 * **Audit-aware acquisition** -- adapts strategy based on active kernel protections
 * **Cryptographic integrity** -- SHA256 on every forensic artifact
-* **Pure C99** (LinSpec, K-Scanner) and **Bash** (S.I.R.E.N) -- zero external dependencies beyond system libraries
+* **Pure C99** (LinSpec, K-Scanner) and **Bash** (S.I.R.E.N) -- minimal dependencies (system libraries + ncurses for K-Scanner TUI)
 
 ---
 
@@ -118,7 +118,7 @@ sudo ./kscanner --json > alerts.json
 * Automatic SHA256 integrity chain on every artifact
 * JSON/CSV structured forensic reports
 * Modular architecture -- each tool works standalone or integrated
-* Zero external dependencies (C99 + system libraries)
+* Minimal dependencies (C99 + system libraries; ncurses for K-Scanner TUI)
 
 ---
 
@@ -194,7 +194,7 @@ Analysis flow:
 
 **Orchestration layer:**
 
-* `syntropy-run.sh` -- Runs the full pipeline (LinSpec + SIREN + K-Scanner) in one command
+* `syntropy-run.sh` -- Runs the full pipeline (LinSpec + S.I.R.E.N + K-Scanner) in one command
 * `syntropy-bind.sh` -- Creates a unified `syntropy_report.json` from all tool outputs
 * `syntropy-scan-offline.sh` -- Offline analysis of existing .bin dumps
 
@@ -214,11 +214,11 @@ cd LinSpec && make clean && make && cd ..
 cd K-Scanner && make clean && make && cd ..
 
 # ---- SIREN ----
-chmod +x SIREN/src/siren.sh
+chmod +x S.I.R.E.N/src/siren.sh
 
 # Ready. Run as root:
 sudo ./LinSpec/linspec
-sudo ./SIREN/src/siren.sh
+sudo ./S.I.R.E.N/src/siren.sh
 sudo ./K-Scanner/kscanner --help
 ```
 
@@ -294,7 +294,7 @@ The report lands in `reports/report.json` and S.I.R.E.N picks it up automaticall
 ### Phase 2: Acquisition with S.I.R.E.N
 
 ```bash
-cd SIREN
+cd S.I.R.E.N
 sudo ./src/siren.sh
 ```
 
@@ -498,7 +498,7 @@ SYNTROPY/
 │   ├── docs/                ├── technical documentation
 │   └── Makefile
 │
-├── SIREN/                   <- Memory acquisition
+├── S.I.R.E.N/               <- Memory acquisition
 │   ├── src/                 ├── siren.sh
 │   ├── dumps/               ├── extracted artifacts (.bin, .sha256, manifest.csv)
 │   ├── docs/                ├── acquisition model, safety model
@@ -553,7 +553,7 @@ Each subdirectory keeps its own docs and an independent Makefile. You can use th
 ## Documentation
 
 [![Docs-LinSpec](https://img.shields.io/badge/LinSpec-Architecture-002B36?style=flat-square\&logo=linux\&logoColor=white)](./LinSpec/docs/architecture.md)
-[![Docs-SIREN](https://img.shields.io/badge/SIREN-Acquisition-00599C?style=flat-square\&logo=linux\&logoColor=white)](./S.I.R.E.N/docs/ACQUISITION_MODEL.md)
+[![Docs-SIREN](https://img.shields.io/badge/S.I.R.E.N-Acquisition-00599C?style=flat-square\&logo=linux\&logoColor=white)](./S.I.R.E.N/docs/ACQUISITION_MODEL.md)
 [![Docs-KScanner](https://img.shields.io/badge/K--Scanner-Methodology-003366?style=flat-square\&logo=linux\&logoColor=white)](./K-Scanner/docs/forensic_methodology.md)
 [![Docs-ThreatModel](https://img.shields.io/badge/Threat-Model-CC0000?style=flat-square\&logo=dependabot\&logoColor=white)](./K-Scanner/docs/threat_model.md)
 

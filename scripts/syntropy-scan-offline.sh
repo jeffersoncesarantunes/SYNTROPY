@@ -13,6 +13,11 @@ if [[ ! -f "$DUMP" ]]; then
     exit 1
 fi
 
+if [[ -n "$YARA_RULE" && ! -f "$YARA_RULE" ]]; then
+    printf "\033[31m[!]\033[0m YARA rule file not found: %s\n" "$YARA_RULE"
+    exit 1
+fi
+
 printf "\033[36m[SYNTROPY]\033[0m Scanning: %s\n" "$DUMP"
 printf "  Size: %s\n" "$(du -h "$DUMP" | cut -f1)"
 
