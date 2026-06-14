@@ -78,17 +78,23 @@ Volatile memory acquisition tool that's context-aware. It reads LinSpec's `repor
 | Option | Function | Source | Risk |
 |--------|----------|--------|------|
 | 1 | Map physical RAM | `/proc/iomem` | None |
-| 2 | Verify pipeline | `/proc/version` | None |
-| 3 | Live extraction | `/dev/mem` | Moderate |
-| 4 | Forensic bypass | `/proc/kcore` | Low |
+| 2 | Test acquisition pipeline | `/proc/cpuinfo` | None |
+| 3 | Quick triage dump (100 MB) | `/proc/kcore` | Low |
+| 4 | Full memory acquisition (ELF) | `/proc/kcore` | Low |
 
 **How it adapts based on audit data:**
-- If `kptr_restrict > 0` it switches to `/proc/kcore`
+- If `kptr_restrict > 0` it reads audit params for context
 - If `spectre_v2 = 0` or `meltdown = 0` it warns about side-channel leaks during extraction
-- If `devmem_restrict = 1` it prefers `/proc/kcore`
+
+**Key improvements:**
+- ELF-aware `/proc/kcore` extraction via Python (parses PT_LOAD segments)
+- Non-interactive CLI mode: `--quick`, `--full`, `--test`, `--output`
+- Post-dump content validation (entropy sampling, magic bytes)
+- Persistent operation logging for chain of custody
 
 ```bash
-sudo ./src/siren.sh
+sudo ./src/siren.sh          # Interactive menu
+sudo ./src/siren.sh --full   # Headless full acquisition
 ```
 
 ### 3. K-Scanner -- Live Process Forensics
@@ -214,7 +220,7 @@ cd LinSpec && make clean && make && cd ..
 cd K-Scanner && make clean && make && cd ..
 
 # ---- SIREN ----
-chmod +x S.I.R.E.N/src/siren.sh
+chmod +x S.I.R.E.N/src/siren.sh S.I.R.E.N/tools/kcore_extract.py
 
 # Ready. Run as root:
 sudo ./LinSpec/linspec
@@ -301,15 +307,22 @@ sudo ./src/siren.sh
 You get an interactive menu:
 
 ```
-1) Map Physical Memory (iomem)        -> Lists valid RAM regions
-2) Verify Extraction Pipeline         -> Tests pipeline without extraction
-3) Live Memory Extraction (/dev/mem)  -> Extracts 100 MB via /dev/mem
-4) Advanced Forensic Bypass (kcore)   -> Extracts full RAM via /proc/kcore
+1) Map Physical RAM (iomem)            -> Lists valid RAM regions
+2) Test Acquisition Pipeline           -> Tests pipeline without extraction
+3) Quick Triage Dump (100MB /kcore)    -> Extracts 100 MB via /proc/kcore
+4) Full Memory Acquisition (ELF kcore) -> Extracts via ELF-aware segment parsing
 5) Exit
 ```
 
-**Production recommendation:** Option 4 (kcore) is more stable with zero freeze risk.
-**Option 3 (/dev/mem):** Only use this if kcore is unavailable.
+**Recommendation:** Option 4 (Full / ELF extraction) uses Python to parse PT_LOAD segments from `/proc/kcore`, producing a dump with segment metadata. It's the most complete and stable method.
+
+**Quick triage (Option 3):** Use for fast assessment when you only need strings/indicators.
+
+Non-interactive usage:
+```bash
+sudo ./src/siren.sh --quick                    # 100MB triage
+sudo ./src/siren.sh --full --output /evidence/  # Full + custom dir
+```
 
 ### Phase 3: Analysis with K-Scanner
 
@@ -499,8 +512,10 @@ SYNTROPY/
 │   └── Makefile
 │
 ├── S.I.R.E.N/               <- Memory acquisition
-│   ├── src/                 ├── siren.sh
-│   ├── dumps/               ├── extracted artifacts (.bin, .sha256, manifest.csv)
+│   ├── src/                 ├── siren.sh (entry point)
+│   ├── lib/                 ├── audit.sh, acquisition.sh, reporting.sh, safety.sh
+│   ├── tools/               ├── kcore_extract.py (ELF segment extractor)
+│   ├── dumps/               ├── extracted artifacts (.bin, .sha256, .meta.json, manifest.csv)
 │   ├── docs/                ├── acquisition model, safety model
 │   └── .gitignore
 │

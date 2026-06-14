@@ -51,7 +51,7 @@ printf "\033[32m       ->\033[0m %s/audit/report.json\n" "$CASE_ROOT"
 printf "\033[36m[2/4]\033[0m S.I.R.E.N -- Memory Acquisition (kcore)...\n"
 cd "$SYNTROPY_DIR/S.I.R.E.N"
 mkdir -p dumps/binaries dumps/reports dumps/checksums
-sudo bash src/siren.sh <<< $'4\n\n5\n' 2>/dev/null || true
+sudo bash src/siren.sh --full 2>/dev/null || true
 
 LATEST_DUMP=$(find dumps/binaries -maxdepth 1 -name '*.bin' -type f 2>/dev/null | sort -r | head -1)
 if [[ -n "$LATEST_DUMP" ]]; then
@@ -60,6 +60,8 @@ if [[ -n "$LATEST_DUMP" ]]; then
     cp dumps/checksums/*.sha256 "$CASE_ROOT/acquire/" 2>/dev/null || true
     cp dumps/binaries/*.txt "$CASE_ROOT/acquire/" 2>/dev/null || true
     cp dumps/reports/manifest.csv "$CASE_ROOT/acquire/" 2>/dev/null || true
+    # Copy ELF segment metadata if present
+    cp dumps/binaries/*.meta.json "$CASE_ROOT/acquire/" 2>/dev/null || true
     DUMP_HASH=$(sha256sum "$LATEST_DUMP" | awk '{print $1}')
     printf "\033[32m       ->\033[0m %s (%s)\n" "$(basename "$LATEST_DUMP")" "$(du -h "$LATEST_DUMP" | cut -f1)"
     printf "\033[32m       ->\033[0m SHA256: %s\n" "$DUMP_HASH"
