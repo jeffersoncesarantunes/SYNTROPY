@@ -78,9 +78,9 @@ Volatile memory acquisition tool that's context-aware. It reads LinSpec's `repor
 | Option | Function | Source | Risk |
 |--------|----------|--------|------|
 | 1 | Map physical RAM | `/proc/iomem` | None |
-| 2 | Test acquisition pipeline | `/proc/cpuinfo` | None |
-| 3 | Quick triage dump (100 MB) | `/proc/kcore` | Low |
-| 4 | Full memory acquisition (ELF) | `/proc/kcore` | Low |
+| 2 | Verify extraction pipeline | `/proc/version` | None |
+| 3 | Live memory extraction | `/dev/mem` (falls back to `/proc/kcore`) | Low |
+| 4 | Advanced forensic bypass | `/proc/kcore` (ELF-aware) | Low |
 
 **How it adapts based on audit data:**
 - If `kptr_restrict > 0` it reads audit params for context
@@ -307,16 +307,16 @@ sudo ./src/siren.sh
 You get an interactive menu:
 
 ```
-1) Map Physical RAM (iomem)            -> Lists valid RAM regions
-2) Test Acquisition Pipeline           -> Tests pipeline without extraction
-3) Quick Triage Dump (100MB /kcore)    -> Extracts 100 MB via /proc/kcore
-4) Full Memory Acquisition (ELF kcore) -> Extracts via ELF-aware segment parsing
+1) Map Physical Memory (iomem)
+2) Verify Extraction Pipeline
+3) Live Memory Extraction (/dev/mem)
+4) Advanced Forensic Bypass (kcore)
 5) Exit
 ```
 
-**Recommendation:** Option 4 (Full / ELF extraction) uses Python to parse PT_LOAD segments from `/proc/kcore`, producing a dump with segment metadata. It's the most complete and stable method.
+**Note:** Option 3 attempts `/dev/mem` but modern kernels restrict it via `CONFIG_STRICT_DEVMEM` — the tool falls back to `/proc/kcore` automatically.
 
-**Quick triage (Option 3):** Use for fast assessment when you only need strings/indicators.
+**Recommendation:** Option 4 (kcore) uses Python to parse PT_LOAD segments from `/proc/kcore` (ELF-aware extraction), producing a dump with segment metadata. It's the most complete and stable method.
 
 Non-interactive usage:
 ```bash
