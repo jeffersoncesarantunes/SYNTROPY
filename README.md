@@ -496,35 +496,37 @@ full_scan_20260603.bin.yara.txt <- YARA rule matches (if --yara)
 ```text
 SYNTROPY/
 │
-├── K-Scanner/               <- RWX process analysis
-│   ├── src/                 ├── core/ (kscanner.c, mem_analyzer, process_hunter)
-│   │                       ├── modules/ (tui_engine, export_engine, regex_engine)
-│   │                       └── utils/ (logger, memory_utils)
-│   ├── include/             ├── public headers
-│   ├── scripts/             ├── build, test, diagnostic
-│   ├── docs/                ├── architecture, threat model, methodology
+├── K-Scanner/                              RWX process analysis
+│   ├── src/
+│   │   ├── core/                           kscanner.c, mem_analyzer, process_hunter
+│   │   ├── modules/                        tui_engine, export_engine, regex_engine
+│   │   └── utils/                          logger, memory_utils
+│   ├── include/                            Public headers
+│   ├── scripts/                            Build, test, diagnostic
+│   ├── docs/                               Architecture, threat model, methodology
 │   └── Makefile
-│
-├── LinSpec/                 <- Kernel hardening audit
-│   ├── src/                 ├── main.c, memory_audit.c, system_audit.c
-│   ├── include/             ├── headers
-│   ├── docs/                ├── technical documentation
+
+├── LinSpec/                                Kernel hardening audit
+│   ├── src/                                main.c, memory_audit.c, system_audit.c
+│   ├── include/                            Headers
+│   ├── docs/                               Technical documentation
 │   └── Makefile
-│
-├── S.I.R.E.N/               <- Memory acquisition
-│   ├── src/                 ├── siren.sh (entry point)
-│   ├── lib/                 ├── audit.sh, acquisition.sh, reporting.sh, safety.sh
-│   ├── tools/               ├── kcore_extract.py (ELF segment extractor)
-│   ├── dumps/               ├── extracted artifacts (.bin, .sha256, .meta.json, manifest.csv)
-│   ├── docs/                ├── acquisition model, safety model
+
+├── S.I.R.E.N/                              Memory acquisition
+│   ├── src/                                siren.sh (entry point)
+│   ├── lib/                                audit.sh, acquisition.sh, reporting.sh, safety.sh
+│   ├── tools/                              kcore_extract.py (ELF segment extractor)
+│   ├── dumps/                              Extracted artifacts (.bin, .sha256, .meta.json, manifest.csv)
+│   ├── docs/                               Acquisition model, safety model
 │   └── .gitignore
-│
-├── scripts/                 <- orchestration, handoff, offline scan
+
+├── scripts/                                Orchestration, handoff, offline scan
 │   ├── syntropy-run.sh
 │   ├── syntropy-bind.sh
 │   └── syntropy-scan-offline.sh
-│
-├── README.md                <- This file
+
+├── README.md                               This file
+
 └── LICENSE
 ```
 
