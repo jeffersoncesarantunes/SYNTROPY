@@ -495,43 +495,43 @@ full_scan_20260603.bin.yara.txt <- YARA rule matches (if --yara)
 
 ```text
 SYNTROPY/
-|
-+-- K-Scanner/                              RWX process analysis (submodule)
-|   +-- src/
-|   |   +-- core/                           Core scanning engine
-|   |   +-- modules/                        TUI, export, regex engines
-|   |   \-- utils/                          Logging and memory utilities
-|   +-- include/                            Public header files
-|   +-- scripts/                            Build, test, and diagnostic scripts
-|   +-- docs/                               Architecture, threat model, methodology
-|   \-- Makefile
+│
+├── K-Scanner/
+│   ├── src/
+│   │   ├── core/
+│   │   ├── modules/
+│   │   └── utils/
+│   ├── include/
+│   ├── scripts/
+│   ├── docs/
+│   └── Makefile
 
-+-- LinSpec/                                Kernel hardening audit (submodule)
-|   +-- src/                                Audit engine source files
-|   +-- include/                            Header files
-|   +-- docs/                               Technical documentation
-|   \-- Makefile
+├── LinSpec/
+│   ├── src/
+│   ├── include/
+│   ├── docs/
+│   └── Makefile
 
-+-- S.I.R.E.N/                              Memory acquisition (submodule)
-|   +-- src/                                Entry point (siren.sh)
-|   +-- lib/                                Acquisition, audit, reporting, safety
-|   +-- tools/                              Python ELF segment extractor
-|   +-- dumps/                              Extracted forensic artifacts
-|   +-- docs/                               Acquisition and safety models
-|   \-- .gitignore
+├── S.I.R.E.N/
+│   ├── src/
+│   ├── lib/
+│   ├── tools/
+│   ├── dumps/
+│   ├── docs/
+│   └── .gitignore
 
-+-- scripts/                                Orchestration and automation
-|   +-- syntropy-run.sh                     Full pipeline orchestrator
-|   +-- syntropy-bind.sh                    Unified report generator
-|   \-- syntropy-scan-offline.sh            Offline dump analysis
+├── scripts/
+│   ├── syntropy-run.sh
+│   ├── syntropy-bind.sh
+│   └── syntropy-scan-offline.sh
 
-+-- .gitmodules
+├── .gitmodules
 
-+-- LICENSE
+├── LICENSE
 
-+-- README.md
+├── README.md
 
-\-- SECURITY.md
+└── SECURITY.md
 ```
 
 Each subdirectory keeps its own docs and an independent Makefile. You can use the toolkit as an integrated suite or grab individual tools.
