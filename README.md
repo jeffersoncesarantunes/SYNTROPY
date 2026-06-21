@@ -496,38 +496,42 @@ full_scan_20260603.bin.yara.txt <- YARA rule matches (if --yara)
 ```text
 SYNTROPY/
 │
-├── K-Scanner/                              RWX process analysis
+├── K-Scanner/                              RWX process analysis (submodule)
 │   ├── src/
-│   │   ├── core/                           kscanner.c, mem_analyzer, process_hunter
-│   │   ├── modules/                        tui_engine, export_engine, regex_engine
-│   │   └── utils/                          logger, memory_utils
-│   ├── include/                            Public headers
-│   ├── scripts/                            Build, test, diagnostic
+│   │   ├── core/                           Core scanning engine
+│   │   ├── modules/                        TUI, export, regex engines
+│   │   └── utils/                          Logging and memory utilities
+│   ├── include/                            Public header files
+│   ├── scripts/                            Build, test, and diagnostic scripts
 │   ├── docs/                               Architecture, threat model, methodology
 │   └── Makefile
 
-├── LinSpec/                                Kernel hardening audit
-│   ├── src/                                main.c, memory_audit.c, system_audit.c
-│   ├── include/                            Headers
+├── LinSpec/                                Kernel hardening audit (submodule)
+│   ├── src/                                Audit engine source files
+│   ├── include/                            Header files
 │   ├── docs/                               Technical documentation
 │   └── Makefile
 
-├── S.I.R.E.N/                              Memory acquisition
-│   ├── src/                                siren.sh (entry point)
-│   ├── lib/                                audit.sh, acquisition.sh, reporting.sh, safety.sh
-│   ├── tools/                              kcore_extract.py (ELF segment extractor)
-│   ├── dumps/                              Extracted artifacts (.bin, .sha256, .meta.json, manifest.csv)
-│   ├── docs/                               Acquisition model, safety model
+├── S.I.R.E.N/                              Memory acquisition (submodule)
+│   ├── src/                                Entry point (siren.sh)
+│   ├── lib/                                Acquisition, audit, reporting, safety
+│   ├── tools/                              Python ELF segment extractor
+│   ├── dumps/                              Extracted forensic artifacts
+│   ├── docs/                               Acquisition and safety models
 │   └── .gitignore
 
-├── scripts/                                Orchestration, handoff, offline scan
-│   ├── syntropy-run.sh
-│   ├── syntropy-bind.sh
-│   └── syntropy-scan-offline.sh
+├── scripts/                                Orchestration and automation
+│   ├── syntropy-run.sh                     Full pipeline orchestrator
+│   ├── syntropy-bind.sh                    Unified report generator
+│   └── syntropy-scan-offline.sh            Offline dump analysis
 
-├── README.md                               This file
+├── .gitmodules
 
-└── LICENSE
+├── LICENSE
+
+├── README.md
+
+└── SECURITY.md
 ```
 
 Each subdirectory keeps its own docs and an independent Makefile. You can use the toolkit as an integrated suite or grab individual tools.
