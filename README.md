@@ -3,10 +3,10 @@
 Unified Linux Incident Response Toolkit -- Audit, Acquire, Analyze.
 
 [![Platform-Linux](https://img.shields.io/badge/Platform-Linux-1793D1?style=flat-square&logo=linux&logoColor=white)](https://kernel.org)
-[![Language-C99](https://img.shields.io/badge/Core-C99-A8B9CC?style=flat-square&logo=c&logoColor=white)](https://gcc.gnu.org/)
+[![Language-C99](https://img.shields.io/badge/Core-C99-00599C?style=flat-square&logo=c&logoColor=white)](https://gcc.gnu.org/)
 [![Language-Bash](https://img.shields.io/badge/Acquisition-Bash-4EAA25?style=flat-square&logo=gnu-bash&logoColor=white)](https://www.gnu.org/software/bash/)
 [![License-MIT](https://img.shields.io/badge/License-MIT-EE0000?style=flat-square&logo=license&logoColor=white)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Active-00FF41?style=flat-square)](#-roadmap)
+[![Status](https://img.shields.io/badge/Status-Active-00A86B?style=flat-square)](#-roadmap)
 [![Tested-on](https://img.shields.io/badge/Tested%20on-Arch%20Linux-1793D1?style=flat-square&logo=arch-linux)](https://security.archlinux.org/)
 [![Domain](https://img.shields.io/badge/Domain-Blue%20Team%20%7C%20DFIR-8A2BE2?style=flat-square)](#-overview)
 
