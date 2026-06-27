@@ -60,7 +60,6 @@ if [[ -n "$LATEST_DUMP" ]]; then
     cp dumps/checksums/*.sha256 "$CASE_ROOT/acquire/" 2>/dev/null || true
     cp dumps/binaries/*.txt "$CASE_ROOT/acquire/" 2>/dev/null || true
     cp dumps/reports/manifest.csv "$CASE_ROOT/acquire/" 2>/dev/null || true
-    # Copy ELF segment metadata if present
     cp dumps/binaries/*.meta.json "$CASE_ROOT/acquire/" 2>/dev/null || true
     DUMP_HASH=$(sha256sum "$LATEST_DUMP" | awk '{print $1}')
     printf "\033[32m       ->\033[0m %s (%s)\n" "$(basename "$LATEST_DUMP")" "$(du -h "$LATEST_DUMP" | cut -f1)"
