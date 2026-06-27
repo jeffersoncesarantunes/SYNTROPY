@@ -1,0 +1,27 @@
+name: SYNTROPY CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: 'recursive'
+      - name: Install dependencies
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libncurses-dev
+      - name: Build submodules
+        run: make build
+      - name: Verify binaries
+        run: |
+          ./K-Scanner/kscanner --help
+          ./LinSpec/linspec --help
+      - name: ShellCheck scripts
+        run: shellcheck scripts/*.sh
+      - name: Docker build
+        run: make docker

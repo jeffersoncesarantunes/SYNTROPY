@@ -1,0 +1,63 @@
+.TH SYNTROPY 1 "2026-06-27" "1.0" "SYNTROPY Manual"
+.SH NAME
+syntropy \- Unified Linux Incident Response Toolkit (Audit, Acquire, Analyze)
+.SH SYNOPSIS
+.B syntropy-run.sh
+[\fB\-\-yara\fR \fIrules.yara\fR] [\fB\-\-out\fR \fIdir\fR]
+.PP
+.B syntropy-bind.sh
+\fIcase_root\fR [\fIdump_hash\fR]
+.PP
+.B syntropy-scan-offline.sh
+\fIdump.bin\fR [\fB\-\-yara\fR \fIrules.yara\fR]
+.SH DESCRIPTION
+SYNTROPY is an open-source forensic ecosystem that orchestrates LinSpec (kernel
+audit), S.I.R.E.N (memory acquisition), and K-Scanner (RWX analysis) to perform
+the full incident response lifecycle on Linux systems.
+.PP
+It operates in three phases:
+.IP 1. 4
+LinSpec audits kernel hardening parameters (ASLR, kptr_restrict, ptrace_scope,
+BPF JIT, etc.) and produces a structured report.
+.IP 2. 4
+S.I.R.E.N acquires volatile memory via /proc/kcore with audit-aware strategy
+adjustment and cryptographic integrity (SHA256).
+.IP 3. 4
+K-Scanner scans live processes for RWX memory regions and suspicious mappings,
+with optional YARA rule matching.
+.PP
+The three scripts work together:
+.B syntropy-run.sh
+executes the full pipeline (audit, acquire, analyze) and produces a unified
+report via
+.BR syntropy-bind.sh .
+.B syntropy-scan-offline.sh
+analyzes a previously acquired memory dump.
+.SH OPTIONS
+.TP
+.B syntropy-run.sh
+.TP
+\fB\-\-yara\fR \fIrules.yara\fR
+Path to YARA rules file for K-Scanner analysis phase.
+.TP
+\fB\-\-out\fR \fIdir\fR
+Output directory for case artifacts (default: /tmp/syntropy/FOR-YYYYMMDD-HHMMSS).
+.TP
+.B syntropy-scan-offline.sh
+.TP
+\fB\-\-yara\fR \fIrules.yara\fR
+Path to YARA rules file for offline dump scanning.
+.SH FILES
+.TP
+.I /tmp/syntropy/FOR-*
+Default case output directory containing audit/, acquire/, and analyze/
+subdirectories along with the unified syntropy_report.json.
+.TP
+.I /opt/siren
+S.I.R.E.N acquisition toolkit location.
+.SH EXIT STATUS
+The scripts exit 0 on success and 1 on error (missing file, invalid argument,
+or unsupported option).
+.SH SEE ALSO
+.BR linspec (1),
+.BR kscanner (1)

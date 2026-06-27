@@ -9,6 +9,9 @@ Unified Linux Incident Response Toolkit -- Audit, Acquire, Analyze.
 [![Status](https://img.shields.io/badge/Status-Active-00A86B?style=flat-square)](#-roadmap)
 [![Tested-on](https://img.shields.io/badge/Tested%20on-Arch%20Linux-1793D1?style=flat-square&logo=arch-linux)](https://security.archlinux.org/)
 [![Domain](https://img.shields.io/badge/Domain-Blue%20Team%20%7C%20DFIR-8A2BE2?style=flat-square)](#-overview)
+[![CI](https://img.shields.io/github/actions/workflow/status/jeffersoncesarantunes/SYNTROPY/ci.yml?style=flat-square&logo=github&label=CI)](https://github.com/jeffersoncesarantunes/SYNTROPY/actions/workflows/ci.yml)
+[![Docker](https://img.shields.io/badge/Docker-Alpine%203.24-2496ED?style=flat-square&logo=docker&logoColor=white)](Dockerfile)
+[![Man Page](https://img.shields.io/badge/Man-SYNTROPY-5272B4?style=flat-square&logo=man&logoColor=white)](man/syntropy.1)
 
 ---
 
