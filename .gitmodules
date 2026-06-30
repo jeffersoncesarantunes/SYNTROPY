@@ -1,9 +1,12 @@
 [submodule "K-Scanner"]
 	path = K-Scanner
 	url = git@github.com:jeffersoncesarantunes/K-Scanner.git
+	branch = main
 [submodule "LinSpec"]
 	path = LinSpec
 	url = git@github.com:jeffersoncesarantunes/LinSpec.git
+	branch = main
 [submodule "S.I.R.E.N"]
 	path = S.I.R.E.N
 	url = git@github.com:jeffersoncesarantunes/S.I.R.E.N.git
+	branch = main
