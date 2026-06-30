@@ -581,10 +581,3 @@ Each subdirectory keeps its own docs and an independent Makefile. You can use th
 [![Docs-KScanner](https://img.shields.io/badge/K--Scanner-Methodology-003366?style=flat-square\&logo=linux\&logoColor=white)](./K-Scanner/docs/forensic_methodology.md)
 [![Docs-ThreatModel](https://img.shields.io/badge/Threat-Model-CC0000?style=flat-square\&logo=dependabot\&logoColor=white)](./K-Scanner/docs/threat_model.md)
 
----
-
-## License
-
-[![License-MIT](https://img.shields.io/badge/License-MIT-EE0000?style=flat-square\&logo=opensourceinitiative\&logoColor=white)](./LICENSE)
-
-*This project is licensed under the MIT License. Each subproject (K-Scanner, LinSpec, S.I.R.E.N) also maintains its own license under the same terms.*
