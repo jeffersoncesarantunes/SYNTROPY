@@ -42,7 +42,7 @@ for arg in "$@"; do
 done
 
 if [[ -z "$CASE_ROOT" ]]; then
-    LATEST=$(ls -d /tmp/syntropy/FOR-* 2>/dev/null | sort -r | head -1)
+    LATEST=$(find /tmp/syntropy -maxdepth 1 -type d -name 'FOR-*' 2>/dev/null | sort -r | head -1)
     if [[ -z "$LATEST" ]]; then
         echo "Error: no case-root provided and no /tmp/syntropy/FOR-* found."
         exit 1
