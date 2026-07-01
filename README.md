@@ -120,7 +120,7 @@ sudo ./kscanner --json > alerts.json
 
 ## Features
 
-* Full memory incident response lifecycle (triage -> acquisition -> analysis)
+* Full memory incident response lifecycle (triage -> acquisition -> analysis -> remediation)
 * Audit-aware acquisition strategy that adapts to kernel hardening level
 * Real-time RWX memory violation detection
 * Interactive ncurses-based forensic TUI
@@ -222,6 +222,8 @@ cd LinSpec && make clean && make && cd ..
 # ---- K-Scanner ----
 cd K-Scanner && make clean && make && cd ..
 
+# ---- LinSpec remediation module (built with LinSpec) ----
+
 # ---- SIREN ----
 chmod +x S.I.R.E.N/src/siren.sh S.I.R.E.N/tools/kcore_extract.py
 
@@ -278,6 +280,14 @@ INCIDENT DETECTED
 │ Evidence with    │
 │ cryptographic    │
 │ chain of custody │
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐
+│ REMEDIATE        │
+│ Automated        │
+│ remediation      │
+│ suggestions      │
 └──────────────────┘
 ```
 
@@ -408,7 +418,7 @@ SYNTROPY was designed for live-response environments where you can't afford to b
 
 ## Scripts
 
-SYNTROPY comes with three automation scripts that wire together the full forensic pipeline between LinSpec, S.I.R.E.N, and K-Scanner. They're all independent -- they call the existing tool binaries and process their output without modifying anything in the tools themselves.
+SYNTROPY comes with four automation scripts that wire together the full forensic pipeline between LinSpec, S.I.R.E.N, and K-Scanner. They're all independent -- they call the existing tool binaries and process their output without modifying anything in the tools themselves.
 
 ### Quick Start
 
@@ -437,6 +447,7 @@ Here's what it does:
 2. **S.I.R.E.N** -- memory acquisition via kcore (`.bin` dump)
 3. **K-Scanner** -- live RWX analysis (`kscan_results.json`)
 4. **syntropy-bind.sh** -- unified report generation
+5. **syntropy-remediate.sh** -- automated remediation plan (`remediation_plan.json`)
 
 All artifacts go under `/tmp/syntropy/FOR-<timestamp>/` (or wherever `--out` points):
 
@@ -449,7 +460,8 @@ All artifacts go under `/tmp/syntropy/FOR-<timestamp>/` (or wherever `--out` poi
 │   └── report_*.json
 ├── analyze/
 │   └── kscan_results.json
-└── syntropy_report.json    <- unified forensic report
+├── syntropy_report.json        <- unified forensic report
+└── remediation_plan.json       <- remediation suggestions
 ```
 
 ### syntropy-bind.sh -- Unified Report Generator
@@ -469,6 +481,37 @@ Generates `syntropy_report.json` with:
 - RWX alert summary and process list
 - SHA256 chain of custody
 - Artifact paths for all phases
+
+### syntropy-remediate.sh -- Automated Remediation Suggestions
+
+Generates a structured `remediation_plan.json` from all tool findings, organized by severity and grouped by source (LinSpec sysctl, K-Scanner process, SIREN acquisition). Supports interactive and automated modes:
+
+```bash
+# Generate remediation plan from a completed case
+./scripts/syntropy-remediate.sh /tmp/syntropy/FOR-20260603-153022/
+
+# Auto-detect latest case and apply remediations interactively
+sudo ./scripts/syntropy-remediate.sh --apply
+
+# Apply remediations without confirmation prompts
+sudo ./scripts/syntropy-remediate.sh --apply --force
+```
+
+**What it suggests:**
+
+| Source | Finding Type | Suggested Action |
+|--------|-------------|------------------|
+| LinSpec | Kernel param VULN/WARN | `sysctl -w <param>=<value>` |
+| K-Scanner | RWX ALERT process | `kill -9 <PID>` or `docker stop <container>` |
+| K-Scanner | Shellcode / YARA match | Isolate binary, quarantine |
+| S.I.R.E.N | Integrity failure / missing dump | Re-acquire or investigate |
+
+Additionally generates a `persistent_block` that can be pasted into `/etc/sysctl.d/99-syntropy-hardening.conf` for boot-persistent kernel hardening.
+
+**Under the hood:**
+- LinSpec findings processed by `LinSpec/remediator` (C) -- reads `report.json`, outputs structured JSON
+- K-Scanner findings parsed from `kscan_results.json` -- each RWX ALERT becomes a kill/quarantine suggestion
+- SIREN findings verified via SHA256 integrity check on acquired dumps
 
 ### syntropy-scan-offline.sh -- Offline Dump Analysis
 
@@ -526,6 +569,7 @@ SYNTROPY/
 ├── scripts/
 │   ├── syntropy-run.sh
 │   ├── syntropy-bind.sh
+│   ├── syntropy-remediate.sh
 │   └── syntropy-scan-offline.sh
 
 ├── .gitmodules
@@ -570,7 +614,7 @@ Each subdirectory keeps its own docs and an independent Makefile. You can use th
 * [x] **Automated orchestration pipeline** (`syntropy-run.sh`)
 * [x] **Unified forensic reporting** (`syntropy-bind.sh`)
 * [x] **Offline dump analysis** (`syntropy-scan-offline.sh`)
-* [ ] Automated remediation suggestions
+* [x] Automated remediation suggestions (syntropy-remediate.sh)
 
 ---
 

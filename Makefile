@@ -34,6 +34,7 @@ install: build
 	@install -m 0755 scripts/syntropy-run.sh $(DESTDIR)/usr/local/bin/
 	@install -m 0755 scripts/syntropy-bind.sh $(DESTDIR)/usr/local/bin/
 	@install -m 0755 scripts/syntropy-scan-offline.sh $(DESTDIR)/usr/local/bin/
+	@install -m 0755 scripts/syntropy-remediate.sh $(DESTDIR)/usr/local/bin/
 	@$(MAKE) -C K-Scanner install
 	@$(MAKE) -C LinSpec install
 	@echo "OK Installed."

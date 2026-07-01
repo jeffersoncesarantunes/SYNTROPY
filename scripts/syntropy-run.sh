@@ -41,14 +41,14 @@ mkdir -p "$CASE_ROOT"/{audit,acquire,analyze}
 printf "\033[36m[SYNTROPY]\033[0m Case: %s\n" "$CASE_ID"
 printf "\033[36m[SYNTROPY]\033[0m Output: %s\n" "$CASE_ROOT"
 
-printf "\033[36m[1/4]\033[0m LinSpec -- Kernel Hardening Audit...\n"
+printf "\033[36m[1/5]\033[0m LinSpec -- Kernel Hardening Audit...\n"
 cd "$SYNTROPY_DIR/LinSpec"
 sudo ./linspec 2>/dev/null || true
 cp reports/report.json "$CASE_ROOT/audit/" 2>/dev/null || true
 cp reports/report.csv "$CASE_ROOT/audit/" 2>/dev/null || true
 printf "\033[32m       ->\033[0m %s/audit/report.json\n" "$CASE_ROOT"
 
-printf "\033[36m[2/4]\033[0m S.I.R.E.N -- Memory Acquisition (kcore)...\n"
+printf "\033[36m[2/5]\033[0m S.I.R.E.N -- Memory Acquisition (kcore)...\n"
 cd "$SYNTROPY_DIR/S.I.R.E.N"
 mkdir -p dumps/binaries dumps/reports dumps/checksums
 sudo bash src/siren.sh --full 2>/dev/null || true
@@ -69,7 +69,7 @@ else
     printf "\033[33m       ->\033[0m No dump found (run SIREN manually if needed)\n"
 fi
 
-printf "\033[36m[3/4]\033[0m K-Scanner -- Live RWX Analysis...\n"
+printf "\033[36m[3/5]\033[0m K-Scanner -- Live RWX Analysis...\n"
 cd "$SYNTROPY_DIR/K-Scanner"
 EXTRA_ARGS=(--silent-jit)
 [[ -n "$YARA_RULE" ]] && EXTRA_ARGS+=(--yara "$YARA_RULE")
@@ -77,10 +77,14 @@ sudo ./kscanner --json "${EXTRA_ARGS[@]}" 2>/dev/null | tee "$CASE_ROOT/analyze/
 ALERTS=$(grep -c '"RWX ALERT"' "$CASE_ROOT/analyze/kscan_results.json" 2>/dev/null || echo 0)
 printf "\033[32m       ->\033[0m %s alerts, saved to analyze/kscan_results.json\n" "$ALERTS"
 
-printf "\033[36m[4/4]\033[0m Generating Unified Report...\n"
+printf "\033[36m[4/5]\033[0m Generating Unified Report...\n"
 bash "$SYNTROPY_DIR/scripts/syntropy-bind.sh" "$CASE_ROOT" "$DUMP_HASH"
+
+printf "\033[36m[5/5]\033[0m Generating Remediation Suggestions...\n"
+bash "$SYNTROPY_DIR/scripts/syntropy-remediate.sh" "$CASE_ROOT" 2>/dev/null || true
 
 printf "\n\033[32m[SYNTROPY] Done.\033[0m\n"
 printf "  Case:  \033[36m%s\033[0m\n" "$CASE_ID"
 printf "  Root:  %s\n" "$CASE_ROOT"
 printf "  Report: %s/syntropy_report.json\n" "$CASE_ROOT"
+printf "  Remediation: %s/remediation_plan.json\n" "$CASE_ROOT"
