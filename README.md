@@ -551,13 +551,11 @@ SYNTROPY/
 │   ├── scripts/
 │   ├── docs/
 │   └── Makefile
-
 ├── LinSpec/
 │   ├── src/
 │   ├── include/
 │   ├── docs/
 │   └── Makefile
-
 ├── S.I.R.E.N/
 │   ├── src/
 │   ├── lib/
@@ -565,19 +563,14 @@ SYNTROPY/
 │   ├── dumps/
 │   ├── docs/
 │   └── .gitignore
-
 ├── scripts/
 │   ├── syntropy-run.sh
 │   ├── syntropy-bind.sh
 │   ├── syntropy-remediate.sh
 │   └── syntropy-scan-offline.sh
-
 ├── .gitmodules
-
 ├── LICENSE
-
 ├── README.md
-
 └── SECURITY.md
 ```
 
