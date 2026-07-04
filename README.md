@@ -217,10 +217,10 @@ git clone https://github.com/jeffersoncesarantunes/SYNTROPY.git
 cd SYNTROPY
 
 # ---- LinSpec ----
-cd LinSpec && make clean && make && cd ..
+cd LinSpec && make && cd ..
 
 # ---- K-Scanner ----
-cd K-Scanner && make clean && make && cd ..
+cd K-Scanner && make && cd ..
 
 # ---- LinSpec remediation module (built with LinSpec) ----
 
