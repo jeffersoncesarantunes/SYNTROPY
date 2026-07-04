@@ -13,21 +13,21 @@ all: build
 build: $(TARGETS)
 
 K-Scanner/kscanner: K-Scanner/Makefile
-	@echo "Building K-Scanner..."
+	@echo "🔨 Building K-Scanner..."
 	@$(MAKE) -C K-Scanner all
 
 LinSpec/linspec: LinSpec/Makefile
-	@echo "Building LinSpec..."
+	@echo "🔨 Building LinSpec..."
 	@$(MAKE) -C LinSpec all
 
 test:
-	@echo "Running ShellCheck on scripts..."
+	@echo "🧪 Running ShellCheck on scripts..."
 	@shellcheck scripts/*.sh
-	@echo "OK all tests passed."
+	@echo "✅ All tests passed."
 
 docker:
 	@docker build -t syntropy:latest .
-	@echo "OK Docker image built: syntropy:latest"
+	@echo "🐳 Docker image built: syntropy:latest"
 
 install: build
 	@install -m 0755 -d $(DESTDIR)/usr/local/bin
@@ -37,14 +37,14 @@ install: build
 	@install -m 0755 scripts/syntropy-remediate.sh $(DESTDIR)/usr/local/bin/
 	@$(MAKE) -C K-Scanner install
 	@$(MAKE) -C LinSpec install
-	@echo "OK Installed."
+	@echo "✅ Installed."
 
 install-man:
 	@install -m 0755 -d $(MANDIR)
 	@install -m 644 man/syntropy.1 $(MANDIR)/syntropy.1
-	@echo "  Installed man page to $(MANDIR)"
+	@echo "  📄 Installed man page to $(MANDIR)"
 
 clean:
 	@$(MAKE) -C K-Scanner clean 2>/dev/null || true
 	@$(MAKE) -C LinSpec clean 2>/dev/null || true
-	@echo "Clean."
+	@echo "🧹 Clean."
