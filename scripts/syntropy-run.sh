@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SYNTROPY_DIR="$(cd "$(dirname "$0")/.." && pwd 2>/dev/null || pwd)"
+SYNTROPY_DIR="$( (cd "$(dirname "$0")/.." && pwd 2>/dev/null) || pwd)"
 CASE_ID="FOR-$(date +%Y%m%d-%H%M%S)"
 CASE_ROOT="/tmp/syntropy/$CASE_ID"
 YARA_RULE=""

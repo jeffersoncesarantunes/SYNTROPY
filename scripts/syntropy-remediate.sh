@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SYNTROPY_DIR="$(cd "$(dirname "$0")/.." && pwd 2>/dev/null || pwd)"
+SYNTROPY_DIR="$( (cd "$(dirname "$0")/.." && pwd 2>/dev/null) || pwd)"
 REMEDIATOR_BIN=$(command -v remediator 2>/dev/null || echo "$SYNTROPY_DIR/LinSpec/remediator")
 
 CASE_ROOT="${1:-}"
