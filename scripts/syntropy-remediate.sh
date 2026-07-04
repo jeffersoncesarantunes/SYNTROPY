@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SYNTROPY_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-REMEDIATOR_BIN="$SYNTROPY_DIR/LinSpec/remediator"
+SYNTROPY_DIR="$(cd "$(dirname "$0")/.." && pwd 2>/dev/null || pwd)"
+REMEDIATOR_BIN=$(command -v remediator 2>/dev/null || echo "$SYNTROPY_DIR/LinSpec/remediator")
 
 CASE_ROOT="${1:-}"
 FLAG_APPLY=0
@@ -109,7 +109,7 @@ with open('$TMPDIR/sysctl_block.txt', 'w') as o:
             echo "" > "$TMPDIR/sysctl_block.txt"
         fi
     else
-        printf "\033[33m       -> remediator not built, using Python fallback\033[0m\n"
+        printf "\033[33m       -> remediator not found, using Python fallback\033[0m\n"
         python3 -c "
 import json
 try:

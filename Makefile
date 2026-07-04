@@ -1,9 +1,4 @@
-CC=gcc
-CFLAGS=-Wall -Wextra -Wpedantic -O2 -std=c99 -D_FORTIFY_SOURCE=2 \
-       -fstack-protector-strong -fPIE -Wformat -Wformat-security
-LDFLAGS=-pie -Wl,-z,relro,-z,now -Wl,-z,noexecstack
-
-TARGETS=K-Scanner/kscanner LinSpec/linspec
+TARGETS=K-Scanner/kscanner LinSpec/linspec LinSpec/remediator
 MANDIR ?= $(DESTDIR)/usr/local/share/man/man1
 
 .PHONY: all build test docker install install-man clean
@@ -19,6 +14,10 @@ K-Scanner/kscanner: K-Scanner/Makefile
 LinSpec/linspec: LinSpec/Makefile
 	@echo "🔨 Building LinSpec..."
 	@$(MAKE) -C LinSpec all
+
+LinSpec/remediator: LinSpec/Makefile
+	@echo "🔨 Building remediator..."
+	@$(MAKE) -C LinSpec remediator
 
 test:
 	@echo "🧪 Running ShellCheck on scripts..."

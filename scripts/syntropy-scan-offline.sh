@@ -27,7 +27,7 @@ printf "  sha256   -> %s\n" "$DUMP.sha256"
 strings -n 6 "$DUMP" > "$DUMP.strings.txt"
 printf "  strings  -> %s\n" "$DUMP.strings.txt"
 
-hexdump -C "$DUMP" | head -n 64 > "$DUMP.hex.txt"
+od -A x -t x1z -v "$DUMP" | head -n 64 > "$DUMP.hex.txt"
 printf "  hexdump  -> %s\n" "$DUMP.hex.txt"
 
 objdump -D -b binary -m i386 -M x86-64,addr=0 "$DUMP" 2>/dev/null | head -n 200 > "$DUMP.disasm.txt"

@@ -233,7 +233,7 @@ sudo ./S.I.R.E.N/src/siren.sh
 sudo ./K-Scanner/kscanner --help
 ```
 
-**Prerequisites:** `gcc`, `make`, `ncurses`, `binutils`, `coreutils`, `bash 4.x+`, root privileges.
+**Prerequisites:** `gcc`, `make`, `ncurses`, `binutils`, `coreutils`, `bash 4.x+`, `python3`, root privileges.
 
 ### YARA (Optional)
 

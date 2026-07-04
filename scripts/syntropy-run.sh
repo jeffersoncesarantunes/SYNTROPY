@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SYNTROPY_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+SYNTROPY_DIR="$(cd "$(dirname "$0")/.." && pwd 2>/dev/null || pwd)"
 CASE_ID="FOR-$(date +%Y%m%d-%H%M%S)"
 CASE_ROOT="/tmp/syntropy/$CASE_ID"
 YARA_RULE=""
+
+LINSPEC_BIN=$(command -v linspec 2>/dev/null || echo "$SYNTROPY_DIR/LinSpec/linspec")
+KSCANNER_BIN=$(command -v kscanner 2>/dev/null || echo "$SYNTROPY_DIR/K-Scanner/kscanner")
+SIREN_DIR="${SIREN_DIR:-$SYNTROPY_DIR/S.I.R.E.N}"
+SCRIPTS_DIR="${SCRIPTS_DIR:-$SYNTROPY_DIR/scripts}"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -42,14 +47,15 @@ printf "\033[36m[SYNTROPY]\033[0m Case: %s\n" "$CASE_ID"
 printf "\033[36m[SYNTROPY]\033[0m Output: %s\n" "$CASE_ROOT"
 
 printf "\033[36m[1/5]\033[0m LinSpec -- Kernel Hardening Audit...\n"
-cd "$SYNTROPY_DIR/LinSpec"
-sudo ./linspec 2>/dev/null || true
-cp reports/report.json "$CASE_ROOT/audit/" 2>/dev/null || true
-cp reports/report.csv "$CASE_ROOT/audit/" 2>/dev/null || true
+cd "$(dirname "$LINSPEC_BIN")"
+sudo "$LINSPEC_BIN" 2>/dev/null || true
+for f in reports/report.json reports/report.csv; do
+    [[ -f "$f" ]] && cp "$f" "$CASE_ROOT/audit/" 2>/dev/null || true
+done
 printf "\033[32m       ->\033[0m %s/audit/report.json\n" "$CASE_ROOT"
 
 printf "\033[36m[2/5]\033[0m S.I.R.E.N -- Memory Acquisition (kcore)...\n"
-cd "$SYNTROPY_DIR/S.I.R.E.N"
+cd "$SIREN_DIR"
 mkdir -p dumps/binaries dumps/reports dumps/checksums
 sudo bash src/siren.sh --full 2>/dev/null || true
 
@@ -70,18 +76,18 @@ else
 fi
 
 printf "\033[36m[3/5]\033[0m K-Scanner -- Live RWX Analysis...\n"
-cd "$SYNTROPY_DIR/K-Scanner"
+cd "$(dirname "$KSCANNER_BIN")"
 EXTRA_ARGS=(--silent-jit)
 [[ -n "$YARA_RULE" ]] && EXTRA_ARGS+=(--yara "$YARA_RULE")
-sudo ./kscanner --json "${EXTRA_ARGS[@]}" 2>/dev/null | tee "$CASE_ROOT/analyze/kscan_results.json" > /dev/null || true
+sudo "$KSCANNER_BIN" --json "${EXTRA_ARGS[@]}" 2>/dev/null | tee "$CASE_ROOT/analyze/kscan_results.json" > /dev/null || true
 ALERTS=$(grep -c '"RWX ALERT"' "$CASE_ROOT/analyze/kscan_results.json" 2>/dev/null || echo 0)
 printf "\033[32m       ->\033[0m %s alerts, saved to analyze/kscan_results.json\n" "$ALERTS"
 
 printf "\033[36m[4/5]\033[0m Generating Unified Report...\n"
-bash "$SYNTROPY_DIR/scripts/syntropy-bind.sh" "$CASE_ROOT" "$DUMP_HASH"
+bash "$SCRIPTS_DIR/syntropy-bind.sh" "$CASE_ROOT" "$DUMP_HASH"
 
 printf "\033[36m[5/5]\033[0m Generating Remediation Suggestions...\n"
-bash "$SYNTROPY_DIR/scripts/syntropy-remediate.sh" "$CASE_ROOT" 2>/dev/null || true
+bash "$SCRIPTS_DIR/syntropy-remediate.sh" "$CASE_ROOT" 2>/dev/null || true
 
 printf "\n\033[32m[SYNTROPY] Done.\033[0m\n"
 printf "  Case:  \033[36m%s\033[0m\n" "$CASE_ID"
