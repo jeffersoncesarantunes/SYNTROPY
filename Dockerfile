@@ -2,7 +2,7 @@ FROM alpine:3.24 AS builder
 RUN apk add --no-cache gcc clang22 musl-dev make ncurses-dev linux-headers
 WORKDIR /src
 COPY . ./
-RUN make -C K-Scanner clean && make -C K-Scanner bpf && make -C K-Scanner
+RUN make -C K-Scanner clean && make -C K-Scanner bpf CLANG=clang-22 && make -C K-Scanner
 RUN make -C LinSpec clean && make -C LinSpec
 
 FROM alpine:3.24
