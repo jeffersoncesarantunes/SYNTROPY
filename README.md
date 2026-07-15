@@ -225,8 +225,18 @@ sudo ./scripts/syntropy-run.sh
 ## Build
 
 ```bash
-cd LinSpec && make && cd ..                          # LinSpec
-cd K-Scanner && make && cd ..                        # K-Scanner
+make build                       # Build all C components (LinSpec + K-Scanner)
+make test                        # Run ShellCheck on all scripts
+make docker                      # Build Docker image
+make install                     # Install system-wide
+make clean                       # Clean build artifacts
+```
+
+You can also build individual components:
+
+```bash
+cd LinSpec && make && cd ..      # LinSpec only
+cd K-Scanner && make && cd ..    # K-Scanner only
 chmod +x S.I.R.E.N/src/siren.sh S.I.R.E.N/tools/kcore_extract.py  # SIREN (scripts, no compilation)
 ```
 
