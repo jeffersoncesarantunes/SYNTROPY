@@ -209,31 +209,26 @@ Analysis flow:
 
 ---
 
-## Quick Install
+## Quick Start
 
 ```bash
-# Clone the unified toolkit
 git clone https://github.com/jeffersoncesarantunes/SYNTROPY.git
 cd SYNTROPY
-
-# ---- LinSpec ----
 cd LinSpec && make && cd ..
-
-# ---- K-Scanner ----
 cd K-Scanner && make && cd ..
-
-# ---- LinSpec remediation module (built with LinSpec) ----
-
-# ---- SIREN ----
 chmod +x S.I.R.E.N/src/siren.sh S.I.R.E.N/tools/kcore_extract.py
-
-# Ready. Run as root:
-sudo ./LinSpec/linspec
-sudo ./S.I.R.E.N/src/siren.sh
-sudo ./K-Scanner/kscanner --help
+sudo ./scripts/syntropy-run.sh
 ```
 
 **Prerequisites:** `gcc`, `make`, `ncurses`, `binutils`, `coreutils`, `bash 4.x+`, `python3`, root privileges.
+
+## Build
+
+```bash
+cd LinSpec && make && cd ..                          # LinSpec
+cd K-Scanner && make && cd ..                        # K-Scanner
+chmod +x S.I.R.E.N/src/siren.sh S.I.R.E.N/tools/kcore_extract.py  # SIREN (scripts, no compilation)
+```
 
 ### YARA (Optional)
 
