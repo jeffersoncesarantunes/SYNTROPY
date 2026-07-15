@@ -50,7 +50,7 @@ printf "\033[36m[1/5]\033[0m LinSpec -- Kernel Hardening Audit...\n"
 cd "$(dirname "$LINSPEC_BIN")"
 sudo "$LINSPEC_BIN" 2>/dev/null || true
 for f in reports/report.json reports/report.csv; do
-    [[ -f "$f" ]] && cp "$f" "$CASE_ROOT/audit/" 2>/dev/null || true
+    [ -f "$f" ] && cp "$f" "$CASE_ROOT/audit/" 2>/dev/null; true
 done
 printf "\033[32m       ->\033[0m %s/audit/report.json\n" "$CASE_ROOT"
 

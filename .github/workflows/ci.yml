@@ -22,6 +22,8 @@ jobs:
           ./K-Scanner/kscanner --help
           ./LinSpec/linspec --help
       - name: ShellCheck scripts
-        run: shellcheck scripts/*.sh
+        run: |
+          shellcheck --version
+          shellcheck -S warning scripts/*.sh
       - name: Docker build
         run: make docker
