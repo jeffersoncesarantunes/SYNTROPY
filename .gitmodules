@@ -1,12 +1,12 @@
 [submodule "K-Scanner"]
 	path = K-Scanner
 	url = https://github.com/jeffersoncesarantunes/K-Scanner.git
-	branch = main
+	fetchRecurseSubmodules = on-demand
 [submodule "LinSpec"]
 	path = LinSpec
 	url = https://github.com/jeffersoncesarantunes/LinSpec.git
-	branch = main
+	fetchRecurseSubmodules = on-demand
 [submodule "S.I.R.E.N"]
 	path = S.I.R.E.N
 	url = https://github.com/jeffersoncesarantunes/S.I.R.E.N.git
-	branch = main
+	fetchRecurseSubmodules = on-demand
