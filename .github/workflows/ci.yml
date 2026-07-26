@@ -10,17 +10,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
-          submodules: recursive
+          fetch-depth: 0
+      - name: Initialize submodules
+        run: |
+          git submodule update --init --recursive --force
       - name: Install dependencies
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq \
-          libncurses-dev \
-          clang
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q \
+            libncurses-dev \
+            clang-22
       - name: Build submodules
         run: make build
       - name: Build BPF object
-        run: make -C K-Scanner bpf
+        run: make -C K-Scanner bpf CLANG=clang-22
       - name: Verify binaries
         run: |
           test -x K-Scanner/kscanner && ./K-Scanner/kscanner --help
