@@ -21,6 +21,7 @@ jobs:
           sudo apt-get update -q
           sudo apt-get install -y -q \
             libncurses-dev \
+            libbpf-dev \
             lsb-release \
             gpg
           wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | \
